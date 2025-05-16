@@ -1,0 +1,86 @@
+[gd_scene load_steps=12 format=3 uid="uid://cxfbp4dcxsqq6"]
+
+[ext_resource type="Script" uid="uid://dnn4525r157dq" path="res://scripts/Multiplayer/multiplayer_controller.gd" id="1_80evv"]
+[ext_resource type="Texture2D" uid="uid://cp8nm4xu0ecmx" path="res://assets/sprites/knight.png" id="2_2d20i"]
+[ext_resource type="Script" uid="uid://cgkto0ct2xoxp" path="res://scripts/Multiplayer/multiplayer_input.gd" id="2_k8tkd"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_2d20i"]
+properties/0/path = NodePath(".:player_id")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:position")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_jlq18"]
+properties/0/path = NodePath("../InputSynchronizer:input_direction_x")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("../InputSynchronizer:input_direction_y")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g2els"]
+atlas = ExtResource("2_2d20i")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qhqgy"]
+atlas = ExtResource("2_2d20i")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dqkch"]
+atlas = ExtResource("2_2d20i")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
+atlas = ExtResource("2_2d20i")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_k8tkd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g2els")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qhqgy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dqkch")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qlg0r")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jlq18"]
+radius = 5.0
+
+[node name="MultiplayerPlayer" type="CharacterBody2D"]
+script = ExtResource("1_80evv")
+
+[node name="PlayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_2d20i")
+
+[node name="InputSynchronizer" type="MultiplayerSynchronizer" parent="."]
+unique_name_in_owner = true
+root_path = NodePath("../Camera2D")
+replication_config = SubResource("SceneReplicationConfig_jlq18")
+script = ExtResource("2_k8tkd")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(1, -8)
+sprite_frames = SubResource("SpriteFrames_k8tkd")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, -1)
+shape = SubResource("CircleShape2D_jlq18")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(1, 0)
+zoom = Vector2(3, 3)
