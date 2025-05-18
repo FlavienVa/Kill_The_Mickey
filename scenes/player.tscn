@@ -50,11 +50,18 @@ script = ExtResource("1_g2els")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(1, -8)
+scale = Vector2(8, 8)
 sprite_frames = SubResource("SpriteFrames_tuyoq")
 animation = &"idle"
 autoplay = "idle"
 frame_progress = 0.782986
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(1, -1)
+position = Vector2(-1, 46)
+scale = Vector2(8, 8)
 shape = SubResource("CircleShape2D_fjrip")
+
+[node name="AttackCooldownTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="RespawnTimer" type="Timer" parent="."]

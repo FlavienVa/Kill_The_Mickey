@@ -18,13 +18,3 @@ func _ready():
 func _physics_process(delta):
 	input_direction_x = Input.get_axis("move_left", "move_right")
 	input_direction_y = Input.get_axis("move_up", "move_down")
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	if Input.is_action_just_pressed("jump"):
-		jump.rpc()
-
-@rpc("call_local")
-func jump():
-	if multiplayer.is_server():
-		player.do_jump = true

@@ -60,6 +60,8 @@ animations = [{
 radius = 5.0
 
 [node name="MultiplayerPlayer" type="CharacterBody2D"]
+z_index = 5
+collision_layer = 2
 script = ExtResource("1_80evv")
 
 [node name="PlayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
@@ -73,14 +75,21 @@ script = ExtResource("2_k8tkd")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(1, -8)
+scale = Vector2(8, 8)
 sprite_frames = SubResource("SpriteFrames_k8tkd")
 animation = &"idle"
 autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(1, -1)
+position = Vector2(-4, 47)
+scale = Vector2(8, 8)
 shape = SubResource("CircleShape2D_jlq18")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(1, 0)
-zoom = Vector2(3, 3)
+
+[node name="RespawnTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[connection signal="timeout" from="RespawnTimer" to="." method="_respawn"]

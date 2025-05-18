@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-const SPEED = 130.0
+const SPEED = 1300.0
 
 @onready var animated_sprite = $AnimatedSprite2D
 
@@ -68,3 +68,7 @@ func _set_alive():
 	print("alive again!")
 	alive = true
 	Engine.time_scale = 1.0
+
+
+func _on_respawn_timer_timeout() -> void:
+	pass # Replace with function body.
