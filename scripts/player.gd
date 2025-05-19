@@ -3,7 +3,7 @@ extends CharacterBody2D
 const SPEED = 1300.0
 const ATTACK_COOLDOWN = 0.5
 const ATTACK_DAMAGE = 1
-const ATTACK_RANGE = 100.0
+const ATTACK_RANGE = 300.0
 
 var has_knife := false
 var attack_cooldown := ATTACK_COOLDOWN
@@ -11,6 +11,7 @@ var can_attack := true
 var initial_position: Vector2
 var attack_direction := Vector2.RIGHT
 var is_attacking := false
+
 
 func _ready() -> void:
 	# Store the initial position for respawning
@@ -75,6 +76,7 @@ func perform_attack():
 	can_attack = true
 
 func _on_attack_hit(body: Node2D) -> void:
+	print("There is someone under your sword")
 	if body.is_in_group("enemy"):
 		# Handle enemy hit
 		if body.has_method("take_damage"):
@@ -88,6 +90,7 @@ func mark_dead() -> void:
 	visible = false
 	# Wait a short moment before respawning
 	await get_tree().create_timer(1.0).timeout
+	MultiplayerManager.deaths +=1
 	respawn()
 
 func respawn() -> void:

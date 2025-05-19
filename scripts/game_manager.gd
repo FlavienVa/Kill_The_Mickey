@@ -1,5 +1,6 @@
 extends Node
 
+var deaths = 0
 
 func become_host() -> void:
 	print("you clicked become host")

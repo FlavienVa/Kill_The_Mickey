@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 # Enemy properties
 const SPEED = 400.0
-const DETECTION_RADIUS = 300.0
+const DETECTION_RADIUS = 500.0
 const ATTACK_RANGE = 50.0
 const ATTACK_COOLDOWN = 1.5
 
@@ -15,14 +15,14 @@ var player = null
 
 # Movement variables
 var direction := Vector2.ZERO
-var wander_timer := 0.0
-var wander_direction := Vector2.ZERO
+
+@onready var health_label = $HealthLabel
 
 func _ready() -> void:
 	# Add to enemy group for attack detection
 	add_to_group("enemy")
-	# Start wandering
-	start_wandering()
+	# Initialize health label
+	update_health_label()
 
 func _physics_process(delta: float) -> void:
 	if is_dead:
@@ -35,8 +35,6 @@ func _physics_process(delta: float) -> void:
 	# Update movement
 	if player != null:
 		handle_player_detection()
-	else:
-		handle_wandering(delta)
 	
 	# Apply movement
 	move_and_slide()
@@ -61,22 +59,7 @@ func handle_player_detection() -> void:
 		if distance_to_player <= ATTACK_RANGE and can_attack:
 			perform_attack()
 	else:
-		# Return to wandering if player is too far
-		handle_wandering(get_process_delta_time())
-
-func handle_wandering(delta: float) -> void:
-	wander_timer -= delta
-	
-	if wander_timer <= 0:
-		start_wandering()
-	
-	velocity = wander_direction * (SPEED * 0.5)
-
-func start_wandering() -> void:
-	# Generate random direction
-	var random_angle = randf_range(0, 2 * PI)
-	wander_direction = Vector2(cos(random_angle), sin(random_angle))
-	wander_timer = randf_range(1.0, 3.0)
+		velocity = Vector2.ZERO
 
 func perform_attack() -> void:
 	if not can_attack:
@@ -84,9 +67,6 @@ func perform_attack() -> void:
 		
 	can_attack = false
 	print("Enemy attacks!")
-	
-	# Add attack animation or effects here
-	# Example: $AnimatedSprite2D.play("attack")
 	
 	# Check if player is still in range
 	if player != null and global_position.distance_to(player.global_position) <= ATTACK_RANGE:
@@ -102,7 +82,8 @@ func take_damage(amount: int) -> void:
 		return
 		
 	health -= amount
-	print("Enemy took damage! Health: ", health)
+	print("Enemy took damage! Health remaining: ", health)
+	update_health_label()
 	
 	# Visual feedback for taking damage
 	modulate = Color.RED
@@ -112,6 +93,10 @@ func take_damage(amount: int) -> void:
 	if health <= 0:
 		die()
 
+func update_health_label() -> void:
+	if health_label:
+		health_label.text = str(health) + "/" + str(max_health)
+
 func die() -> void:
 	is_dead = true
 	print("Enemy died!")
@@ -119,10 +104,7 @@ func die() -> void:
 	# Disable collision
 	$CollisionShape2D.set_deferred("disabled", true)
 	
-	# Optional: Add death animation
-	# Example: $AnimatedSprite2D.play("death")
-	
-	# Wait for death animation
+	# Wait a moment before removing
 	await get_tree().create_timer(0.5).timeout
 	
 	# Remove enemy
