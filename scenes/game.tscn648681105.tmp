@@ -47,6 +47,12 @@ sources/1 = SubResource("TileSetAtlasSource_gee14")
 [node name="GameManager" type="Node" parent="."]
 script = ExtResource("1_iywne")
 
+[node name="DeathCounterLabel" type="Label" parent="GameManager"]
+offset_left = 457.0
+offset_top = -218.0
+offset_right = 1013.0
+offset_bottom = 71.0
+
 [node name="MultiplayerHUB" type="Control" parent="."]
 z_index = 1
 layout_mode = 3
@@ -95,17 +101,6 @@ position = Vector2(457, -218)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(-12, -5)
-zoom = Vector2(0.5, 0.5)
-
-[node name="DeathCounterLabel" type="Label" parent="Player/Camera2D"]
-unique_name_in_owner = true
-offset_left = -1120.0
-offset_top = 492.0
-offset_right = -399.0
-offset_bottom = 616.0
-theme_override_fonts/font = ExtResource("5_p57ef")
-theme_override_font_sizes/font_size = 32
-vertical_alignment = 2
 
 [node name="Players" type="Node" parent="."]
 

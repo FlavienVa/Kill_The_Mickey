@@ -26,6 +26,10 @@ func _physics_process(delta: float) -> void:
 	input_vector.y = Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
 	input_vector = input_vector.normalized()
 	velocity = input_vector * SPEED
+	if input_vector.x > 0 :
+		$AnimatedSprite2D.flip_h = 0
+	elif input_vector.x < 0 :
+		$AnimatedSprite2D.flip_h = 1
 	move_and_slide()
 
 	# Attack logic
