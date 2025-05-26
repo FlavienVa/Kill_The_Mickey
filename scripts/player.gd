@@ -45,6 +45,12 @@ func _physics_process(delta: float) -> void:
 			current_weapon.scale.x = -abs(current_weapon.scale.x)
 	elif input_vector.y != 0:
 		facing_direction = Vector2(0, input_vector.y)
+		
+	# Play animation
+	if input_vector != Vector2.ZERO:
+		$AnimatedSprite2D.play("run")
+	else:
+		$AnimatedSprite2D.play("idle")
 
 	move_and_slide()
 
