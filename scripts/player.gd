@@ -12,6 +12,11 @@ var initial_position: Vector2
 var attack_direction := Vector2.RIGHT
 var is_attacking := false
 
+var current_weapon: Node2D = null
+var weapon_original_parent: Node = null
+var weapon_original_position: Vector2 = Vector2.ZERO
+
+var facing_direction := Vector2.RIGHT
 
 func _ready() -> void:
 	# Store the initial position for respawning
@@ -24,16 +29,44 @@ func _physics_process(delta: float) -> void:
 	input_vector.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	input_vector.y = Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
 	input_vector = input_vector.normalized()
+	
 	velocity = input_vector * SPEED
-	if input_vector.x > 0 :
-		$AnimatedSprite2D.flip_h = 0
-	elif input_vector.x < 0 :
-		$AnimatedSprite2D.flip_h = 1
+
+	
+	if input_vector.x > 0:
+		$AnimatedSprite2D.flip_h = false
+		facing_direction = Vector2.RIGHT
+		if has_knife and current_weapon:
+			current_weapon.scale.x = abs(current_weapon.scale.x)
+	elif input_vector.x < 0:
+		$AnimatedSprite2D.flip_h = true
+		facing_direction = Vector2.LEFT
+		if has_knife and current_weapon:
+			current_weapon.scale.x = -abs(current_weapon.scale.x)
+	elif input_vector.y != 0:
+		facing_direction = Vector2(0, input_vector.y)
+
 	move_and_slide()
 
 	# Attack logic
 	if has_knife and Input.is_action_just_pressed("attack") and can_attack:
 		perform_attack()
+		
+
+		
+func pickup_weapon(weapon: Node2D) -> void:
+	has_knife = true
+	current_weapon = weapon
+	weapon_original_parent = weapon.get_parent()
+	weapon_original_position = weapon.position
+
+	if weapon.get_parent():
+		weapon.get_parent().remove_child(weapon)
+
+	$WeaponSocket.add_child(weapon)
+	weapon.position = Vector2.ZERO
+
+
 
 func perform_attack():
 	if not can_attack or not has_knife:
@@ -44,8 +77,8 @@ func perform_attack():
 	print("ATTACK")
 	
 	# Store current attack direction based on movement or last direction
-	if velocity != Vector2.ZERO:
-		attack_direction = velocity.normalized()
+	attack_direction = facing_direction
+
 	
 	# Create attack hitbox
 	var attack_hitbox = Area2D.new()
@@ -57,6 +90,7 @@ func perform_attack():
 	
 	# Position the hitbox in front of the player
 	attack_hitbox.position = attack_direction * (ATTACK_RANGE / 2)
+	attack_hitbox.rotation = attack_direction.angle()
 	add_child(attack_hitbox)
 	
 	# Connect to detect hits
@@ -87,8 +121,16 @@ func _on_attack_hit(body: Node2D) -> void:
 		print("Hit enemy!")
 
 func mark_dead() -> void:
-	# Disable player movement and input
+	# Ta bort vapnet och lägg tillbaka det på kartan
+	if current_weapon and weapon_original_parent:
+		$WeaponSocket.remove_child(current_weapon)
+		weapon_original_parent.add_child(current_weapon)
+		current_weapon.position = weapon_original_position
+		current_weapon = null
+		has_knife = false
+
 	set_physics_process(false)
+
 	# Hide the player
 	$AnimatedSprite2D.visible = false
 	# Wait a short moment before respawning
@@ -99,6 +141,7 @@ func mark_dead() -> void:
 		respawn()
 	else : 
 		_game_over()
+
 
 func respawn() -> void:
 	# Reset position to initial spawn point
