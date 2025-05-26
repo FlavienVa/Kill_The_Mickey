@@ -16,7 +16,7 @@ var current_weapon: Node2D = null
 var weapon_original_parent: Node = null
 var weapon_original_position: Vector2 = Vector2.ZERO
 
-
+var facing_direction := Vector2.RIGHT
 
 func _ready() -> void:
 	# Store the initial position for respawning
@@ -30,11 +30,23 @@ func _physics_process(delta: float) -> void:
 	input_vector.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	input_vector.y = Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
 	input_vector = input_vector.normalized()
+	
 	velocity = input_vector * SPEED
-	if input_vector.x > 0 :
-		$AnimatedSprite2D.flip_h = 0
-	elif input_vector.x < 0 :
-		$AnimatedSprite2D.flip_h = 1
+
+	
+	if input_vector.x > 0:
+		$AnimatedSprite2D.flip_h = false
+		facing_direction = Vector2.RIGHT
+		if has_knife and current_weapon:
+			current_weapon.scale.x = abs(current_weapon.scale.x)
+	elif input_vector.x < 0:
+		$AnimatedSprite2D.flip_h = true
+		facing_direction = Vector2.LEFT
+		if has_knife and current_weapon:
+			current_weapon.scale.x = -abs(current_weapon.scale.x)
+	elif input_vector.y != 0:
+		facing_direction = Vector2(0, input_vector.y)
+
 	move_and_slide()
 
 	# Attack logic
@@ -66,8 +78,8 @@ func perform_attack():
 	print("ATTACK")
 	
 	# Store current attack direction based on movement or last direction
-	if velocity != Vector2.ZERO:
-		attack_direction = velocity.normalized()
+	attack_direction = facing_direction
+
 	
 	# Create attack hitbox
 	var attack_hitbox = Area2D.new()
@@ -79,6 +91,7 @@ func perform_attack():
 	
 	# Position the hitbox in front of the player
 	attack_hitbox.position = attack_direction * (ATTACK_RANGE / 2)
+	attack_hitbox.rotation = attack_direction.angle()
 	add_child(attack_hitbox)
 	
 	# Connect to detect hits
