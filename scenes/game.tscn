@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://bkfgf4vgexmva"]
+[gd_scene load_steps=14 format=4 uid="uid://bkfgf4vgexmva"]
 
 [ext_resource type="Script" uid="uid://0h6uwl1ghtep" path="res://scripts/game_manager.gd" id="1_iywne"]
 [ext_resource type="PackedScene" uid="uid://bndpgu0c7tlr6" path="res://scenes/player.tscn" id="1_uwrxv"]
@@ -8,6 +8,8 @@
 [ext_resource type="FontFile" uid="uid://vgl0sm2xl6rm" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="5_p57ef"]
 [ext_resource type="PackedScene" uid="uid://cwdqx0pmwic5u" path="res://scenes/lava_pit.tscn" id="5_u5sy4"]
 [ext_resource type="PackedScene" uid="uid://bhvw5cvcxc3xb" path="res://scenes/enemy.tscn" id="8_gee14"]
+[ext_resource type="Texture2D" uid="uid://bpokv0lviygyq" path="res://assets/sprites/pixil-frame-0(1).png" id="9_0tnpc"]
+[ext_resource type="PackedScene" uid="uid://owidbxma4otx" path="res://scenes/apple.tscn" id="9_vtaks"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_u5sy4"]
 texture = ExtResource("2_p57ef")
@@ -91,11 +93,21 @@ tile_map_data = PackedByteArray("AAD//wAAAAADAAEAAAAAAAAAAAABAAEAAAAAAP//AAABAAE
 tile_set = SubResource("TileSet_gee14")
 
 [node name="Player" parent="." instance=ExtResource("1_uwrxv")]
-position = Vector2(457, -218)
+position = Vector2(0, 8)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(-12, -5)
 zoom = Vector2(0.5, 0.5)
+
+[node name="GameOverLabel" type="Label" parent="Player/Camera2D"]
+unique_name_in_owner = true
+z_index = 7
+offset_left = -235.0
+offset_top = -30.0
+offset_right = 245.0
+offset_bottom = 98.0
+theme_override_fonts/font = ExtResource("5_p57ef")
+theme_override_font_sizes/font_size = 128
 
 [node name="DeathCounterLabel" type="Label" parent="Player/Camera2D"]
 unique_name_in_owner = true
@@ -124,7 +136,16 @@ position = Vector2(1309, 314)
 position = Vector2(1269, -367)
 
 [node name="Enemy" parent="." instance=ExtResource("8_gee14")]
-position = Vector2(1161, -81)
+position = Vector2(5606, -368)
+
+[node name="Apple" parent="." instance=ExtResource("9_vtaks")]
+position = Vector2(963, -40)
+scale = Vector2(10.9766, 10.9766)
+
+[node name="PrinterV1" type="Sprite2D" parent="."]
+position = Vector2(3952, -2011)
+scale = Vector2(10.9766, 10.9766)
+texture = ExtResource("9_0tnpc")
 
 [connection signal="pressed" from="MultiplayerHUB/Panel/VBoxContainer/HostGame" to="GameManager" method="become_host"]
 [connection signal="pressed" from="MultiplayerHUB/Panel/VBoxContainer/JoinGame" to="GameManager" method="join_game"]

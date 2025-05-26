@@ -1,0 +1,42 @@
+[gd_scene load_steps=8 format=3 uid="uid://owidbxma4otx"]
+
+[ext_resource type="Script" uid="uid://bb0vvy3pppicl" path="res://scripts/apple.gd" id="1_3dmh2"]
+[ext_resource type="Texture2D" uid="uid://brhpymfmcibsg" path="res://assets/sprites/fruit.png" id="2_pg1xk"]
+[ext_resource type="PackedScene" uid="uid://r6d6fjkoicai" path="res://scenes/interaction_area.tscn" id="3_3dmh2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3dmh2"]
+radius = 6.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kxxqw"]
+atlas = ExtResource("2_pg1xk")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_bpq8q"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kxxqw")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pg1xk"]
+radius = 31.0161
+
+[node name="Apple" type="StaticBody2D"]
+collision_mask = 2
+script = ExtResource("1_3dmh2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_3dmh2")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -2)
+sprite_frames = SubResource("SpriteFrames_bpq8q")
+
+[node name="Interaction Area" parent="." instance=ExtResource("3_3dmh2")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interaction Area"]
+shape = SubResource("CircleShape2D_pg1xk")

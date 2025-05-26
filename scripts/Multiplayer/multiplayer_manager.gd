@@ -5,6 +5,8 @@ const SERVER_IP = "127.0.0.1"
 
 var deaths = 0
 
+var fluidleft = 4
+
 var multiplayer_scene = preload("res://scenes/multiplayer_player.tscn")
 
 var _players_spawn_node

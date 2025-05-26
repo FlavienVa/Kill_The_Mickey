@@ -3,7 +3,9 @@ extends Node
 @onready var label = %DeathCounterLabel
 
 func _process(delta):
-	label.text = "Deaths: %d" % MultiplayerManager.deaths
+	var fluid = MultiplayerManager.fluidleft
+	var deaths = MultiplayerManager.deaths
+	label.text = "Deaths: %d / Fluid left : %d Units" % [deaths, fluid]	
 
 func become_host() -> void:
 	print("you clicked become host")

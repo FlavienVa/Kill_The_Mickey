@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://rv0632prr6s5"]
+[gd_scene load_steps=8 format=3 uid="uid://rv0632prr6s5"]
 
 [ext_resource type="Script" uid="uid://chouhdbjhhty6" path="res://scripts/knife.gd" id="1_syuqf"]
 [ext_resource type="Texture2D" uid="uid://7xhpcyy6oybw" path="res://assets/sprites/32x32pixelmeleeweapon.png" id="1_ufhdc"]
+[ext_resource type="PackedScene" uid="uid://r6d6fjkoicai" path="res://scenes/interaction_area.tscn" id="3_amocf"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_amocf"]
 atlas = ExtResource("1_ufhdc")
@@ -21,20 +22,28 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_syuqf"]
 size = Vector2(9.8995, 41.0122)
 
-[node name="knife" type="Area2D"]
-position = Vector2(-12, 12)
-scale = Vector2(4, 4)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_amocf"]
+size = Vector2(370.375, 345.563)
+
+[node name="knife" type="StaticBody2D"]
 collision_mask = 2
 script = ExtResource("1_syuqf")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(1, -2)
+position = Vector2(2, -2)
+scale = Vector2(4, 4)
 sprite_frames = SubResource("SpriteFrames_rhlpq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(1.5, -2.5)
+position = Vector2(2, -3)
 rotation = 0.785398
+scale = Vector2(4, 4)
 shape = SubResource("RectangleShape2D_syuqf")
 one_way_collision_margin = 0.0
 
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[node name="Interaction Area" parent="." instance=ExtResource("3_amocf")]
+position = Vector2(-5, -2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interaction Area"]
+position = Vector2(6, 0)
+shape = SubResource("RectangleShape2D_amocf")
