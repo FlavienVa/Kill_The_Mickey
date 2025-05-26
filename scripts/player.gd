@@ -22,7 +22,6 @@ func _ready() -> void:
 	# Store the initial position for respawning
 	initial_position = position
 	# Add the player to the "player" group
-	add_to_group("player")
 
 func _physics_process(delta: float) -> void:
 	# Movement
@@ -130,12 +129,18 @@ func mark_dead() -> void:
 		current_weapon = null
 		has_knife = false
 
-	# Fortsätt som vanligt
 	set_physics_process(false)
-	visible = false
+
+	# Hide the player
+	$AnimatedSprite2D.visible = false
+	# Wait a short moment before respawning
 	await get_tree().create_timer(1.0).timeout
 	MultiplayerManager.deaths +=1
-	respawn()
+	MultiplayerManager.fluidleft -=1
+	if (MultiplayerManager.fluidleft > 0) :
+		respawn()
+	else : 
+		_game_over()
 
 
 func respawn() -> void:
@@ -144,4 +149,20 @@ func respawn() -> void:
 	# Re-enable player movement and input
 	set_physics_process(true)
 	# Make the player visible again
-	visible = true
+	$AnimatedSprite2D.visible = true
+	
+func _game_over() -> void:
+	# Disable player movement and input
+	set_physics_process(false)
+	
+	$AnimatedSprite2D.visible = false
+	# Show game over message
+	var game_over_label = %GameOverLabel
+	game_over_label.text = "GAME OVER\nDeaths: %d" % MultiplayerManager.deaths
+	
+	# Wait a few seconds before restarting
+	await get_tree().create_timer(3.0).timeout
+	
+	# Restart the game
+	get_tree().reload_current_scene()
+	
