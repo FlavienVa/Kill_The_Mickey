@@ -1,5 +1,7 @@
 extends Node
 
+var deaths = 0
+
 const SERVER_PORT = 8080
 const SERVER_IP = "127.0.0.1"
 

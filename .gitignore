@@ -1,3 +1,5 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+scenes/EnemySpawner.gd
+scenes/EnemySpawner.gd.uid

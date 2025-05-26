@@ -12,6 +12,11 @@ var initial_position: Vector2
 var attack_direction := Vector2.RIGHT
 var is_attacking := false
 
+var current_weapon: Node2D = null
+var weapon_original_parent: Node = null
+var weapon_original_position: Vector2 = Vector2.ZERO
+
+
 
 func _ready() -> void:
 	# Store the initial position for respawning
@@ -35,6 +40,22 @@ func _physics_process(delta: float) -> void:
 	# Attack logic
 	if has_knife and Input.is_action_just_pressed("attack") and can_attack:
 		perform_attack()
+		
+
+		
+func pickup_weapon(weapon: Node2D) -> void:
+	has_knife = true
+	current_weapon = weapon
+	weapon_original_parent = weapon.get_parent()
+	weapon_original_position = weapon.position
+
+	if weapon.get_parent():
+		weapon.get_parent().remove_child(weapon)
+
+	$WeaponSocket.add_child(weapon)
+	weapon.position = Vector2.ZERO
+
+
 
 func perform_attack():
 	if not can_attack or not has_knife:
@@ -88,14 +109,21 @@ func _on_attack_hit(body: Node2D) -> void:
 		print("Hit enemy!")
 
 func mark_dead() -> void:
-	# Disable player movement and input
+	# Ta bort vapnet och lägg tillbaka det på kartan
+	if current_weapon and weapon_original_parent:
+		$WeaponSocket.remove_child(current_weapon)
+		weapon_original_parent.add_child(current_weapon)
+		current_weapon.position = weapon_original_position
+		current_weapon = null
+		has_knife = false
+
+	# Fortsätt som vanligt
 	set_physics_process(false)
-	# Hide the player
 	visible = false
-	# Wait a short moment before respawning
 	await get_tree().create_timer(1.0).timeout
 	MultiplayerManager.deaths +=1
 	respawn()
+
 
 func respawn() -> void:
 	# Reset position to initial spawn point
