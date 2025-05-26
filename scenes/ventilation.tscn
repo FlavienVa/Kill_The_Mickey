@@ -1,0 +1,50 @@
+[gd_scene load_steps=9 format=3 uid="uid://4cnt85smd4e4"]
+
+[ext_resource type="Script" uid="uid://b5ss2ug6c2oyw" path="res://scripts/ventilation.gd" id="1_fftnl"]
+[ext_resource type="Texture2D" uid="uid://bj1qh2bal1t32" path="res://assets/sprites/tilesetSpaceship.png" id="1_u0gsj"]
+[ext_resource type="PackedScene" uid="uid://r6d6fjkoicai" path="res://scenes/interaction_area.tscn" id="2_fftnl"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wqta5"]
+atlas = ExtResource("1_u0gsj")
+region = Rect2(512, 256, 256, 256)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rd4fn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wqta5")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_idx7v"]
+size = Vector2(248, 246)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n4l3p"]
+size = Vector2(255, 872)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e24y7"]
+size = Vector2(894, 239)
+
+[node name="ventilation" type="StaticBody2D"]
+script = ExtResource("1_fftnl")
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_rd4fn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2, 0)
+shape = SubResource("RectangleShape2D_idx7v")
+
+[node name="Interaction Area" parent="." instance=ExtResource("2_fftnl")]
+action_name = "enter"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interaction Area"]
+position = Vector2(2, 0)
+shape = SubResource("RectangleShape2D_n4l3p")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Interaction Area"]
+position = Vector2(17, 2)
+shape = SubResource("RectangleShape2D_e24y7")

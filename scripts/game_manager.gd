@@ -1,6 +1,8 @@
 extends Node
 
-@onready var label = get_node("../Player/DeathCounterLabel");
+@onready var label = %DeathCounterLabel;
+
+
 
 func _process(delta):
 	var fluid = MultiplayerManager.fluidleft

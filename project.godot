@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Kill_The_Mickey"
-run/main_scene="uid://bsahwd8iq5bwi"
+run/main_scene="uid://ckhh4a8l332dk"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
