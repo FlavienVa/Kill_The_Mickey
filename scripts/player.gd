@@ -29,6 +29,16 @@ var sprite_variants = {
 	}
 var variant_keys = sprite_variants.keys()
 
+@onready var _footstep_audio := $FootStepAudio
+@onready var _footstep_timer := $FootStepTimer
+
+# Footstep sounds
+var footstep_sounds = [
+	preload("res://assets/sounds/Footsteps 1.wav"),
+	preload("res://assets/sounds/Footsteps 2.wav"),
+	preload("res://assets/sounds/Footsteps 3.wav")
+]
+
 
 func _ready() -> void:
 	# Store the initial position for respawning
@@ -67,19 +77,24 @@ func _physics_process(delta: float) -> void:
 	elif input_vector.y != 0:
 		facing_direction = Vector2(0, input_vector.y)
 		
-	# Play animation
+	# Play animation and footstep sound
 	if input_vector != Vector2.ZERO:
 		$AnimatedSprite2D.play("run")
+		if not _footstep_timer.is_stopped():
+			pass  # already playing
+		else:
+			_footstep_timer.start()
 	else:
 		$AnimatedSprite2D.play("idle")
+		_footstep_timer.stop()
+
 
 	move_and_slide()
 
 	# Attack logic
 	if has_knife and Input.is_action_just_pressed("attack") and can_attack:
 		perform_attack()
-		
-
+			
 		
 func pickup_weapon(weapon: Node2D) -> void:
 	has_knife = true
@@ -195,3 +210,11 @@ func _game_over() -> void:
 	# Restart the game
 	get_tree().reload_current_scene()
 	
+
+
+func _on_foot_step_timer_timeout() -> void:
+	if velocity.length() > 0:
+		var random_index = randi() % footstep_sounds.size()
+		$FootStepAudio.stream = footstep_sounds[random_index]
+		$FootStepAudio.pitch_scale = randf_range(0.95, 1.05)
+		_footstep_audio.play()
