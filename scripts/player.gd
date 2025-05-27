@@ -18,10 +18,31 @@ var weapon_original_position: Vector2 = Vector2.ZERO
 
 var facing_direction := Vector2.RIGHT
 
+@onready var _animated_sprite := $AnimatedSprite2D
+
+# Preload or load variant resources
+var sprite_variants = {
+	"happy": preload("res://player/variants/happy.tres"),
+	"angry": preload("res://player/variants/angry.tres"),
+	"smart": preload("res://player/variants/smart.tres"),
+	"shy": preload("res://player/variants/shy.tres") 
+	}
+var variant_keys = sprite_variants.keys()
+
+
 func _ready() -> void:
 	# Store the initial position for respawning
 	initial_position = position
 	# Add the player to the "player" group
+	# Load a random variant at startup OVERRIDE WHEN CHARACTER CREATION IS IMPLEMENTED
+	randomize()
+	set_sprite_variant(variant_keys[randi() % variant_keys.size()])
+	
+func set_sprite_variant(variant_name: String) -> void:
+	if sprite_variants.has(variant_name):
+		_animated_sprite.sprite_frames = sprite_variants[variant_name]
+	else:
+		push_error("Variant '%s' not found!" % variant_name)
 
 func _physics_process(delta: float) -> void:
 	# Movement
@@ -154,6 +175,8 @@ func respawn() -> void:
 	position = initial_position
 	# Re-enable player movement and input
 	set_physics_process(true)
+	# Change the variant
+	set_sprite_variant(variant_keys[randi() % variant_keys.size()])
 	# Make the player visible again
 	$AnimatedSprite2D.visible = true
 	
