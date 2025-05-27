@@ -1,59 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://bndpgu0c7tlr6"]
+[gd_scene load_steps=5 format=3 uid="uid://bndpgu0c7tlr6"]
 
 [ext_resource type="Script" uid="uid://v4sqeqywc10n" path="res://scripts/player.gd" id="1_g2els"]
-[ext_resource type="Texture2D" uid="uid://dwylgyfcrdfet" path="res://assets/sprites/happymickey_spritesheet.png" id="2_g2els"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qhqgy"]
-atlas = ExtResource("2_g2els")
-region = Rect2(192, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_dqkch"]
-atlas = ExtResource("2_g2els")
-region = Rect2(256, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qlg0r"]
-atlas = ExtResource("2_g2els")
-region = Rect2(128, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_tuyoq"]
-atlas = ExtResource("2_g2els")
-region = Rect2(64, 0, 64, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_fjrip"]
-atlas = ExtResource("2_g2els")
-region = Rect2(0, 0, 64, 64)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_tuyoq"]
-resource_name = "Happy"
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qhqgy")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_dqkch")
-}],
-"loop": true,
-"name": &"idle",
-"speed": 2.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qlg0r")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_tuyoq")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_fjrip")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_tuyoq")
-}],
-"loop": true,
-"name": &"run",
-"speed": 5.0
-}]
+[ext_resource type="SpriteFrames" uid="uid://c8ga15eqyabxr" path="res://player/variants/shy.tres" id="2_qhqgy"]
+[ext_resource type="AudioStream" uid="uid://bbckuov7ufvhx" path="res://assets/sounds/Footstep 3-Shaker Acoustic Step 3.wav" id="3_qhqgy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g2els"]
 size = Vector2(62, 201)
@@ -67,9 +16,8 @@ script = ExtResource("1_g2els")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(18, -14)
 scale = Vector2(6, 6)
-sprite_frames = SubResource("SpriteFrames_tuyoq")
+sprite_frames = ExtResource("2_qhqgy")
 animation = &"run"
-autoplay = "idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(14, -28)
@@ -79,3 +27,6 @@ shape = SubResource("RectangleShape2D_g2els")
 one_shot = true
 
 [node name="RespawnTimer" type="Timer" parent="."]
+
+[node name="FootStepAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_qhqgy")
