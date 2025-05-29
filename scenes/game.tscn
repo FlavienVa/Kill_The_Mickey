@@ -1,7 +1,7 @@
-[gd_scene load_steps=14 format=4 uid="uid://bkfgf4vgexmva"]
+[gd_scene load_steps=15 format=4 uid="uid://bkfgf4vgexmva"]
 
 [ext_resource type="Script" uid="uid://0h6uwl1ghtep" path="res://scripts/game_manager.gd" id="1_iywne"]
-[ext_resource type="PackedScene" uid="uid://bndpgu0c7tlr6" path="res://scenes/player.tscn" id="1_uwrxv"]
+[ext_resource type="PackedScene" uid="uid://bndpgu0c7tlr6" path="res://player.tscn" id="1_uwrxv"]
 [ext_resource type="Texture2D" uid="uid://bj1qh2bal1t32" path="res://assets/sprites/tilesetSpaceship.png" id="2_p57ef"]
 [ext_resource type="PackedScene" uid="uid://rv0632prr6s5" path="res://scenes/knife.tscn" id="3_lnu2h"]
 [ext_resource type="Texture2D" uid="uid://d0n1gp7rgtmll" path="res://assets/sprites/lavapit.png" id="4_p57ef"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://bhvw5cvcxc3xb" path="res://scenes/enemy.tscn" id="8_gee14"]
 [ext_resource type="Texture2D" uid="uid://bpokv0lviygyq" path="res://assets/sprites/pixil-frame-0(1).png" id="9_0tnpc"]
 [ext_resource type="PackedScene" uid="uid://owidbxma4otx" path="res://scenes/apple.tscn" id="9_vtaks"]
+[ext_resource type="AudioStream" uid="uid://bd30ot28i3hwk" path="res://assets/music/Main.wav" id="11_kvpfn"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_u5sy4"]
 texture = ExtResource("2_p57ef")
@@ -202,6 +203,11 @@ scale = Vector2(10.9766, 10.9766)
 position = Vector2(3952, -2011)
 scale = Vector2(10.9766, 10.9766)
 texture = ExtResource("9_0tnpc")
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_kvpfn")
+volume_db = -17.802
+autoplay = true
 
 [connection signal="pressed" from="MultiplayerHUB/Panel/VBoxContainer/HostGame" to="GameManager" method="become_host"]
 [connection signal="pressed" from="MultiplayerHUB/Panel/VBoxContainer/JoinGame" to="GameManager" method="join_game"]
