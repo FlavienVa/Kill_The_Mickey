@@ -23,6 +23,9 @@ func _hide():
 			InteractionManager.playerSprite.visible = false
 			InteractionManager.player.set_physics_process(false)
 			
+			if InteractionManager.player.has_knife and InteractionManager.player.current_weapon:
+				InteractionManager.player.current_weapon.visible = false
+			
 			# Start the hide timer
 			hide_timer.start()
 		else:
@@ -34,6 +37,9 @@ func _unhide_player():
 		# Show the player again
 		InteractionManager.playerSprite.visible = true
 		InteractionManager.player.set_physics_process(true)
+		if InteractionManager.player.has_knife and InteractionManager.player.current_weapon:
+				InteractionManager.player.current_weapon.visible = true
+			
 		is_hiding = false
 		hide_timer.stop()
 

@@ -17,6 +17,9 @@ var weapon_original_parent: Node = null
 var weapon_original_position: Vector2 = Vector2.ZERO
 
 var facing_direction := Vector2.RIGHT
+var weapon_target_rotation: float = 0.0
+var weapon_rotation_speed: float = 20.0  # Increase for faster transition
+
 
 @onready var _animated_sprite := $AnimatedSprite2D
 
@@ -48,6 +51,12 @@ func _ready() -> void:
 	randomize()
 	set_sprite_variant(variant_keys[randi() % variant_keys.size()])
 	
+func _process(delta: float) -> void:
+	if current_weapon:
+		var diff = weapon_target_rotation - current_weapon.rotation_degrees
+		current_weapon.rotation_degrees += diff * delta * weapon_rotation_speed
+
+	
 func set_sprite_variant(variant_name: String) -> void:
 	if sprite_variants.has(variant_name):
 		_animated_sprite.sprite_frames = sprite_variants[variant_name]
@@ -69,13 +78,20 @@ func _physics_process(delta: float) -> void:
 		facing_direction = Vector2.RIGHT
 		if has_knife and current_weapon:
 			current_weapon.scale.x = abs(current_weapon.scale.x)
+			$WeaponSocket.position.x = abs($WeaponSocket.position.x)
+
+			
+
 	elif input_vector.x < 0:
 		$AnimatedSprite2D.flip_h = true
 		facing_direction = Vector2.LEFT
 		if has_knife and current_weapon:
 			current_weapon.scale.x = -abs(current_weapon.scale.x)
+			$WeaponSocket.position.x = -abs($WeaponSocket.position.x)
+			
 	elif input_vector.y != 0:
 		facing_direction = Vector2(0, input_vector.y)
+	
 		
 	# Play animation and footstep sound
 	if input_vector != Vector2.ZERO:
@@ -116,11 +132,22 @@ func perform_attack():
 		
 	can_attack = false
 	is_attacking = true
+
+	# Animate weapon forward during attack
+	if current_weapon:
+		weapon_target_rotation = 90.0 if not $AnimatedSprite2D.flip_h else -90.0
+
+			
+
+	# Animate weapon rotation (swinging down)
+	if current_weapon:
+		current_weapon.rotation_degrees = -45 if not $AnimatedSprite2D.flip_h else 45
+
 	print("ATTACK")
 	
 	# Store current attack direction based on movement or last direction
 	attack_direction = facing_direction
-
+	
 	
 	# Create attack hitbox
 	var attack_hitbox = Area2D.new()
@@ -141,12 +168,18 @@ func perform_attack():
 	# Visual feedback
 	$AttackCooldownTimer.start()
 	$AttackCooldownTimer.wait_time = attack_cooldown
-	
+
+
 	# Optional: Add attack animation or effects here
-	# Example: $AnimatedSprite2D.play("attack")
+	#$AnimatedSprite2D.play("attack")
+	
 	
 	# Wait for attack duration
 	await get_tree().create_timer(0.2).timeout
+		# Reset weapon to original position
+	if current_weapon:
+		weapon_target_rotation = 0.0
+
 	is_attacking = false
 	attack_hitbox.queue_free()
 	
@@ -178,6 +211,7 @@ func mark_dead() -> void:
 
 	# Hide the player
 	$AnimatedSprite2D.visible = false
+
 	
 	# Wait a short moment before respawning
 	await get_tree().create_timer(1.0).timeout
@@ -198,6 +232,10 @@ func respawn() -> void:
 	set_sprite_variant(variant_keys[randi() % variant_keys.size()])
 	# Make the player visible again
 	$AnimatedSprite2D.visible = true
+	if current_weapon:
+		current_weapon.visible = true
+
+	
 	
 func _game_over() -> void:
 	# Disable player movement and input

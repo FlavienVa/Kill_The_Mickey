@@ -19,7 +19,7 @@ sprite_frames = ExtResource("2_qhqgy")
 animation = &"run"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(14, -28)
+position = Vector2(15, -33)
 shape = SubResource("RectangleShape2D_g2els")
 
 [node name="AttackCooldownTimer" type="Timer" parent="."]
@@ -28,7 +28,7 @@ one_shot = true
 [node name="RespawnTimer" type="Timer" parent="."]
 
 [node name="WeaponSocket" type="Node2D" parent="."]
-position = Vector2(52, -15)
+position = Vector2(58, -20)
 
 [node name="FootStepAudio" type="AudioStreamPlayer2D" parent="."]
 

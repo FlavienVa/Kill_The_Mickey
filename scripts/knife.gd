@@ -28,3 +28,4 @@ func to_original():
 	interaction_area.set_deferred("monitoring", true)
 	$"Interaction Area/CollisionShape2D".set_deferred("disabled", false)
 	$CollisionShape2D.set_deferred("disabled", true)
+	
