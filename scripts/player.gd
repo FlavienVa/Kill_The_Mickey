@@ -163,11 +163,14 @@ func _on_attack_hit(body: Node2D) -> void:
 		print("Hit enemy!")
 
 func mark_dead() -> void:
-	# Ta bort vapnet och lägg tillbaka det på kartan
+	
 	if current_weapon and weapon_original_parent:
+		
 		$WeaponSocket.remove_child(current_weapon)
 		weapon_original_parent.add_child(current_weapon)
+		current_weapon.to_original()
 		current_weapon.position = weapon_original_position
+		
 		current_weapon = null
 		has_knife = false
 
@@ -175,6 +178,7 @@ func mark_dead() -> void:
 
 	# Hide the player
 	$AnimatedSprite2D.visible = false
+	
 	# Wait a short moment before respawning
 	await get_tree().create_timer(1.0).timeout
 	MultiplayerManager.deaths +=1
