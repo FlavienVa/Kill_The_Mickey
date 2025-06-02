@@ -27,6 +27,7 @@ window/size/always_on_top=true
 [global_group]
 
 player=""
+playerSprite=""
 
 [input]
 

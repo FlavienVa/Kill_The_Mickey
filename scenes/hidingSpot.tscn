@@ -1,0 +1,53 @@
+[gd_scene load_steps=9 format=3 uid="uid://dyondbhyde86n"]
+
+[ext_resource type="Texture2D" uid="uid://bj1qh2bal1t32" path="res://assets/sprites/tilesetSpaceship.png" id="1_71gxu"]
+[ext_resource type="Script" uid="uid://do0jt2l4sykxi" path="res://scripts/hiding_spot.gd" id="1_q6r0p"]
+[ext_resource type="PackedScene" uid="uid://r6d6fjkoicai" path="res://scenes/interaction_area.tscn" id="2_q6r0p"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nhjqd"]
+atlas = ExtResource("1_71gxu")
+region = Rect2(768, 768, 256, 256)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xiqxk"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nhjqd")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v3ns1"]
+size = Vector2(249, 250)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5hcnk"]
+size = Vector2(247, 615)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yqutd"]
+size = Vector2(664, 252)
+
+[node name="HidingSpot" type="StaticBody2D"]
+script = ExtResource("1_q6r0p")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_xiqxk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, -1)
+shape = SubResource("RectangleShape2D_v3ns1")
+
+[node name="HideTimer" type="Timer" parent="."]
+
+[node name="Interaction Area" parent="." instance=ExtResource("2_q6r0p")]
+action_name = "hide"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interaction Area"]
+position = Vector2(2.5, -3.5)
+shape = SubResource("RectangleShape2D_5hcnk")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Interaction Area"]
+position = Vector2(7, 0)
+shape = SubResource("RectangleShape2D_yqutd")
