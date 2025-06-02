@@ -3,7 +3,7 @@ extends StaticBody2D
 @onready var interaction_area = $"Interaction Area"
 @onready var sprite = $AnimatedSprite2D
 
-func _on_body_entered(body: Node2D) -> void:
+func _pickup(body: Node2D) -> void:
 	if body.has_method("pickup_weapon"):
 		body.pickup_weapon(self)
 
@@ -15,4 +15,5 @@ func _ready() -> void:
 
 func _collect_object():
 	InteractionManager.player.has_knife = true
+	_pickup(InteractionManager.player)
 	queue_free()

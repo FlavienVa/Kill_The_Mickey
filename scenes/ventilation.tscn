@@ -23,13 +23,14 @@ animations = [{
 size = Vector2(248, 246)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n4l3p"]
-size = Vector2(255, 872)
+size = Vector2(255, 755.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e24y7"]
-size = Vector2(894, 239)
+size = Vector2(753.5, 239)
 
 [node name="ventilation" type="StaticBody2D"]
 script = ExtResource("1_fftnl")
+spawn_offset = 49.255
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_rd4fn")
@@ -42,9 +43,9 @@ shape = SubResource("RectangleShape2D_idx7v")
 action_name = "enter"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interaction Area"]
-position = Vector2(2, 0)
+position = Vector2(-1, -22.75)
 shape = SubResource("RectangleShape2D_n4l3p")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Interaction Area"]
-position = Vector2(17, 2)
+position = Vector2(-1.75, 1)
 shape = SubResource("RectangleShape2D_e24y7")

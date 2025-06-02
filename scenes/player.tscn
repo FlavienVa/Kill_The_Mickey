@@ -34,7 +34,7 @@ position = Vector2(164, -302)
 collision_layer = 2
 script = ExtResource("1_g2els")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." groups=["playerSprite"]]
 position = Vector2(18, -14)
 scale = Vector2(6, 6)
 sprite_frames = SubResource("SpriteFrames_tuyoq")
@@ -50,3 +50,5 @@ shape = SubResource("RectangleShape2D_g2els")
 one_shot = true
 
 [node name="RespawnTimer" type="Timer" parent="."]
+
+[node name="WeaponSocket" type="Node2D" parent="."]

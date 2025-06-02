@@ -22,6 +22,7 @@ func _ready() -> void:
 	# Store the initial position for respawning
 	initial_position = position
 	# Add the player to the "player" group
+	add_to_group("player")
 
 func _physics_process(delta: float) -> void:
 	# Movement
