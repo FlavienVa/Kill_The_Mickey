@@ -18,11 +18,41 @@ var weapon_original_position: Vector2 = Vector2.ZERO
 
 var facing_direction := Vector2.RIGHT
 
+@onready var _animated_sprite := $AnimatedSprite2D
+
+# Preload or load variant resources
+var sprite_variants = {
+	"happy": preload("res://player/variants/happy.tres"),
+	"angry": preload("res://player/variants/angry.tres"),
+	"smart": preload("res://player/variants/smart.tres"),
+	"shy": preload("res://player/variants/shy.tres") 
+	}
+var variant_keys = sprite_variants.keys()
+
+@onready var _footstep_audio := $FootStepAudio
+@onready var _footstep_timer := $FootStepTimer
+
+# Footstep sounds
+var footstep_sounds = [
+	preload("res://assets/sounds/Footsteps 1.wav"),
+	preload("res://assets/sounds/Footsteps 2.wav"),
+	preload("res://assets/sounds/Footsteps 3.wav")
+]
+
+
 func _ready() -> void:
 	# Store the initial position for respawning
 	initial_position = position
 	# Add the player to the "player" group
-	add_to_group("player")
+	# Load a random variant at startup OVERRIDE WHEN CHARACTER CREATION IS IMPLEMENTED
+	randomize()
+	set_sprite_variant(variant_keys[randi() % variant_keys.size()])
+	
+func set_sprite_variant(variant_name: String) -> void:
+	if sprite_variants.has(variant_name):
+		_animated_sprite.sprite_frames = sprite_variants[variant_name]
+	else:
+		push_error("Variant '%s' not found!" % variant_name)
 
 func _physics_process(delta: float) -> void:
 	# Movement
@@ -46,14 +76,25 @@ func _physics_process(delta: float) -> void:
 			current_weapon.scale.x = -abs(current_weapon.scale.x)
 	elif input_vector.y != 0:
 		facing_direction = Vector2(0, input_vector.y)
+		
+	# Play animation and footstep sound
+	if input_vector != Vector2.ZERO:
+		$AnimatedSprite2D.play("run")
+		if not _footstep_timer.is_stopped():
+			pass  # already playing
+		else:
+			_footstep_timer.start()
+	else:
+		$AnimatedSprite2D.play("idle")
+		_footstep_timer.stop()
+
 
 	move_and_slide()
 
 	# Attack logic
 	if has_knife and Input.is_action_just_pressed("attack") and can_attack:
 		perform_attack()
-		
-
+			
 		
 func pickup_weapon(weapon: Node2D) -> void:
 	has_knife = true
@@ -149,6 +190,8 @@ func respawn() -> void:
 	position = initial_position
 	# Re-enable player movement and input
 	set_physics_process(true)
+	# Change the variant
+	set_sprite_variant(variant_keys[randi() % variant_keys.size()])
 	# Make the player visible again
 	$AnimatedSprite2D.visible = true
 	
@@ -167,3 +210,11 @@ func _game_over() -> void:
 	# Restart the game
 	get_tree().reload_current_scene()
 	
+
+
+func _on_foot_step_timer_timeout() -> void:
+	if velocity.length() > 0:
+		var random_index = randi() % footstep_sounds.size()
+		$FootStepAudio.stream = footstep_sounds[random_index]
+		$FootStepAudio.pitch_scale = randf_range(0.95, 1.05)
+		_footstep_audio.play()
