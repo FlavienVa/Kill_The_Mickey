@@ -12,6 +12,24 @@ var initial_position: Vector2
 var attack_direction := Vector2.RIGHT
 var is_attacking := false
 
+@onready var _health_bar := get_node("HealthBar")
+
+var health := 3
+var max_health := 3
+var is_dead := false
+
+@export var printer_path: NodePath
+@onready var _printer := get_node(printer_path)
+
+
+
+var knockback_velocity := Vector2.ZERO
+var knockback_timer := 0.0
+const KNOCKBACK_DURATION := 0.2
+const KNOCKBACK_FORCE := 600.0
+
+
+
 var current_weapon: Node2D = null
 var weapon_original_parent: Node = null
 var weapon_original_position: Vector2 = Vector2.ZERO
@@ -44,12 +62,17 @@ var footstep_sounds = [
 
 
 func _ready() -> void:
+	print("Health bar found:", _health_bar)
+	print("Printer found: ", _printer)
+
 	# Store the initial position for respawning
 	initial_position = position
 	# Add the player to the "player" group
 	# Load a random variant at startup OVERRIDE WHEN CHARACTER CREATION IS IMPLEMENTED
 	randomize()
 	set_sprite_variant(variant_keys[randi() % variant_keys.size()])
+	_health_bar.max_value = max_health
+	_health_bar.value = health
 	
 func _process(delta: float) -> void:
 	if current_weapon:
@@ -71,6 +94,16 @@ func _physics_process(delta: float) -> void:
 	input_vector = input_vector.normalized()
 	
 	velocity = input_vector * SPEED
+
+	if knockback_timer > 0:
+		knockback_timer -= delta
+		velocity = knockback_velocity
+	else:
+		# Normal movement
+		input_vector.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
+		input_vector.y = Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
+		input_vector = input_vector.normalized()
+		velocity = input_vector * SPEED
 
 	
 	if input_vector.x > 0:
@@ -105,6 +138,7 @@ func _physics_process(delta: float) -> void:
 		_footstep_timer.stop()
 
 
+
 	move_and_slide()
 
 	# Attack logic
@@ -136,12 +170,6 @@ func perform_attack():
 	# Animate weapon forward during attack
 	if current_weapon:
 		weapon_target_rotation = 90.0 if not $AnimatedSprite2D.flip_h else -90.0
-
-			
-
-	# Animate weapon rotation (swinging down)
-	if current_weapon:
-		current_weapon.rotation_degrees = -45 if not $AnimatedSprite2D.flip_h else 45
 
 	print("ATTACK")
 	
@@ -189,12 +217,49 @@ func perform_attack():
 
 func _on_attack_hit(body: Node2D) -> void:
 	print("There is someone under your sword")
-	if body.is_in_group("enemy"):
-		# Handle enemy hit
-		if body.has_method("take_damage"):
-			body.take_damage(ATTACK_DAMAGE)
-		print("Hit enemy!")
+	if body.has_method("take_damage"):
+		print(body)
+		body.take_damage(ATTACK_DAMAGE, global_position)
+	print("Hit enemy!")
+		
+func take_damage(amount: int, source_position: Vector2) -> void:
+	if is_dead:
+		return
 
+	# Reduce health first
+	health -= amount
+	health = clamp(health, 0, max_health)
+
+	update_health_bar()
+
+	# Only apply knockback if we're not dead
+	if health > 0:
+		var knockback_direction = (position - source_position).normalized()
+		apply_knockback(knockback_direction)
+
+	_health_bar.value = health
+
+	if health <= 0:
+		is_dead = true
+		mark_dead()
+
+
+func apply_knockback(direction: Vector2) -> void:
+	knockback_velocity = direction * KNOCKBACK_FORCE
+	knockback_timer = KNOCKBACK_DURATION
+	
+func update_health_bar():
+	var health_ratio = float(health) / max_health
+	_health_bar.value = health
+
+	# Calculate color: green at full, red at zero
+	var red = 1.0 - health_ratio
+	var green = health_ratio
+	var color = Color(red, green, 0)
+
+	_health_bar.add_theme_color_override("fill", color)
+
+		
 func mark_dead() -> void:
 	
 	if current_weapon and weapon_original_parent:
@@ -217,15 +282,17 @@ func mark_dead() -> void:
 	await get_tree().create_timer(1.0).timeout
 	MultiplayerManager.deaths +=1
 	MultiplayerManager.fluidleft -=1
-	if (MultiplayerManager.fluidleft > 0) :
+	if (MultiplayerManager.fluidleft > 0) and not _printer.is_destroyed:
 		respawn()
 	else : 
 		_game_over()
 
 
 func respawn() -> void:
-	# Reset position to initial spawn point
-	position = initial_position
+	if _printer:
+		position = _printer.global_position
+	else:
+		position = initial_position  # fallback
 	# Re-enable player movement and input
 	set_physics_process(true)
 	# Change the variant
@@ -234,6 +301,12 @@ func respawn() -> void:
 	$AnimatedSprite2D.visible = true
 	if current_weapon:
 		current_weapon.visible = true
+	
+	# Reset health
+	health = max_health
+	_health_bar.value = health
+	
+	is_dead = false
 
 	
 	

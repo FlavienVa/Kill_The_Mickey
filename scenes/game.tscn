@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=4 uid="uid://bkfgf4vgexmva"]
+[gd_scene load_steps=21 format=4 uid="uid://bkfgf4vgexmva"]
 
 [ext_resource type="Script" uid="uid://0h6uwl1ghtep" path="res://scripts/game_manager.gd" id="1_iywne"]
 [ext_resource type="PackedScene" uid="uid://bndpgu0c7tlr6" path="res://scenes/player.tscn" id="1_uwrxv"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://bpokv0lviygyq" path="res://assets/sprites/pixil-frame-0(1).png" id="9_0tnpc"]
 [ext_resource type="PackedScene" uid="uid://owidbxma4otx" path="res://scenes/apple.tscn" id="9_vtaks"]
 [ext_resource type="AudioStream" uid="uid://b78mipivupi2" path="res://assets/music/Main.wav" id="11_kvpfn"]
+[ext_resource type="Script" uid="uid://cvqb3yie7lom3" path="res://scripts/printer.gd" id="12_kvuet"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_u5sy4"]
 texture = ExtResource("2_p57ef")
@@ -46,45 +47,20 @@ physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_u5sy4")
 sources/1 = SubResource("TileSetAtlasSource_gee14")
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dinhu"]
+bg_color = Color(0.821911, 2.62313e-06, 7.70092e-07, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kvuet"]
+bg_color = Color(0, 0.458824, 0, 1)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_kvuet"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kvuet"]
+
 [node name="Game" type="Node2D"]
 
 [node name="GameManager" type="Node" parent="."]
 script = ExtResource("1_iywne")
-
-[node name="MultiplayerHUB" type="Control" parent="."]
-z_index = 1
-layout_mode = 3
-anchors_preset = 0
-offset_top = -1000.0
-offset_right = 109.0
-offset_bottom = -959.0
-scale = Vector2(8, 8)
-
-[node name="Panel" type="Panel" parent="MultiplayerHUB"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = -33.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MultiplayerHUB/Panel"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="HostGame" type="Button" parent="MultiplayerHUB/Panel/VBoxContainer"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("5_p57ef")
-theme_override_font_sizes/font_size = 8
-text = "Host Game"
-
-[node name="JoinGame" type="Button" parent="MultiplayerHUB/Panel/VBoxContainer"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("5_p57ef")
-theme_override_font_sizes/font_size = 8
-text = "Join Game"
 
 [node name="TileMapv2" type="Node" parent="."]
 
@@ -151,7 +127,25 @@ offset_bottom = 2389.0
 text = "Door"
 
 [node name="Player" parent="." instance=ExtResource("1_uwrxv")]
-position = Vector2(0, 8)
+position = Vector2(49, -41)
+printer_path = NodePath("../PrinterV1")
+
+[node name="HealthBar" type="ProgressBar" parent="Player"]
+anchors_preset = -1
+anchor_left = 0.081
+anchor_top = -0.651235
+anchor_right = 0.267361
+anchor_bottom = -0.651235
+offset_left = 733.0
+offset_top = 566.0
+offset_right = 1028.0
+offset_bottom = 604.0
+grow_horizontal = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_dinhu")
+theme_override_styles/fill = SubResource("StyleBoxFlat_kvuet")
+max_value = 3.0
+value = 3.0
+show_percentage = false
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(-12, -5)
@@ -203,15 +197,20 @@ position = Vector2(5606, -368)
 position = Vector2(963, -40)
 scale = Vector2(10.9766, 10.9766)
 
-[node name="PrinterV1" type="Sprite2D" parent="."]
+[node name="PrinterV1" type="StaticBody2D" parent="."]
 position = Vector2(3952, -2011)
 scale = Vector2(10.9766, 10.9766)
+physics_material_override = SubResource("PhysicsMaterial_kvuet")
+script = ExtResource("12_kvuet")
+
+[node name="Sprite2D" type="Sprite2D" parent="PrinterV1"]
 texture = ExtResource("9_0tnpc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PrinterV1"]
+position = Vector2(3.0064, -0.455514)
+shape = SubResource("RectangleShape2D_kvuet")
 
 [node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("11_kvpfn")
 volume_db = -17.802
 autoplay = true
-
-[connection signal="pressed" from="MultiplayerHUB/Panel/VBoxContainer/HostGame" to="GameManager" method="become_host"]
-[connection signal="pressed" from="MultiplayerHUB/Panel/VBoxContainer/JoinGame" to="GameManager" method="join_game"]

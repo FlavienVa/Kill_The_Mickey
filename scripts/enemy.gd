@@ -104,8 +104,8 @@ func take_damage(amount: int) -> void:
 
 	if player != null:
 		var knockback_direction = (global_position - player.global_position).normalized()
-		knockback_velocity = knockback_direction * 700  # Testa olika styrkor
-		knockback_timer = 0.3  # Hur länge knockbacken pågår
+		knockback_velocity = knockback_direction * 700  
+		knockback_timer = 0.3  
 		is_knocked_back = true
 
 	# Visuell feedback
