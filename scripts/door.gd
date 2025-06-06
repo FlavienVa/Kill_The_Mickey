@@ -1,0 +1,54 @@
+extends StaticBody2D
+
+@onready var _collision = $CollisionShape2D
+@onready var interaction_area = $"Interaction Area"
+@onready var _audio = $AudioStreamPlayer2D
+@onready var _sprite = $Sprite2D
+@onready var area = $Area2D
+
+@onready var player = get_tree().get_first_node_in_group("player")
+
+
+
+var is_open = true
+var is_destroyed = false
+var health = 5
+
+
+func _ready():
+	add_to_group("doors")
+	_sprite.frame = 1 
+	_collision.disabled = true
+	interaction_area.interact = Callable(self, "_open")
+
+func _open():
+	if InteractionManager.player and not is_destroyed:
+		if not is_open and player.has_method("is_smart") and player.is_smart():
+			# Open the door
+			is_open = true
+		elif player.has_method("is_smart") and player.is_smart():
+			#Close the door
+			is_open = false
+	if is_open:
+		_sprite.frame = 1 
+		_collision.disabled = true  # disable collision when open
+	else: 
+		_sprite.frame = 0
+		_collision.disabled = false  
+	_audio.play()
+	
+func take_damage() -> void:
+	if is_destroyed:
+		return
+	# Visual feedback
+	modulate = Color.RED
+	await get_tree().create_timer(0.1).timeout
+	modulate = Color.WHITE
+	
+	health -= 1
+	print(health)
+	if health <= 0:
+		is_destroyed = true
+		_sprite.frame = 2
+		_collision.disabled = true
+		interaction_area.queue_free()

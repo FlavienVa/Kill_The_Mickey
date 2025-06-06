@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://dls2xqjfcxx86"]
+
+[ext_resource type="Script" uid="uid://chouhdbjhhty6" path="res://scripts/knife.gd" id="1_01xny"]
+[ext_resource type="Texture2D" uid="uid://dgbi3rgchavyt" path="res://assets/sprites/hammer.png" id="2_01xny"]
+[ext_resource type="PackedScene" uid="uid://r6d6fjkoicai" path="res://scenes/interaction_area.tscn" id="3_20s2t"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rhlpq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_01xny")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_syuqf"]
+size = Vector2(9.8995, 41.0122)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_amocf"]
+size = Vector2(370.375, 345.563)
+
+[node name="hammer" type="StaticBody2D"]
+collision_mask = 2
+script = ExtResource("1_01xny")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-6.99999, 9.99998)
+scale = Vector2(7.6875, 7.6875)
+sprite_frames = SubResource("SpriteFrames_rhlpq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2, -3)
+rotation = 0.785398
+scale = Vector2(4, 4)
+shape = SubResource("RectangleShape2D_syuqf")
+one_way_collision_margin = 0.0
+
+[node name="Interaction Area" parent="." instance=ExtResource("3_20s2t")]
+position = Vector2(-5, -2)
+action_name = "pick up"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interaction Area"]
+position = Vector2(6, 0)
+shape = SubResource("RectangleShape2D_amocf")
