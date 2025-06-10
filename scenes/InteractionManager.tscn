@@ -7,7 +7,7 @@
 script = ExtResource("1_ptem4")
 
 [node name="Label" type="Label" parent="."]
-z_index = 20
+z_index = 200
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

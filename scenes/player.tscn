@@ -26,3 +26,6 @@ shape = SubResource("RectangleShape2D_g2els")
 one_shot = true
 
 [node name="RespawnTimer" type="Timer" parent="."]
+
+[node name="FootStepTimer" type="Timer" parent="."]
+wait_time = 0.3

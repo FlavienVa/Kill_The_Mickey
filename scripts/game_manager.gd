@@ -1,13 +1,13 @@
 extends Node
 
-@onready var label = %DeathCounterLabel;
+@onready var label = $GridContainer/SubViewportContainer/SubViewport/Camera2D/DeathCounterLabel
 
 
 
 func _process(delta):
 	var fluid = MultiplayerManager.fluidleft
 	var deaths = MultiplayerManager.deaths
-	label.text = "Deaths: %d / Fluid left : %d Units" % [deaths, fluid]	
+	#label.text = "Deaths: %d / Fluid left : %d Units" % [deaths, fluid]	
 
 func become_host() -> void:
 	print("you clicked become host")

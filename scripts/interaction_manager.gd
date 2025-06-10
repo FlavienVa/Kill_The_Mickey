@@ -1,54 +1,89 @@
 extends Node2D
 
-@onready var player = get_tree().get_first_node_in_group("player")
-@onready var playerSprite = get_tree().get_first_node_in_group("playerSprite")
 @onready var label = $Label
-
 const base_text = "[E] to "
 
-var active_areas = []
-var can_interact = true
+# Store active areas per player
+var player_active_areas = {}
+var player_can_interact = {}
 
-func register_area(area: InteractionArea):
-	print("Registering interaction area: ", area.name)
-	active_areas.push_back(area)
-	print("Active areas count: ", active_areas.size())
+func register_area(area: InteractionArea, triggering_player: Node):
+	print("Registering interaction area: ", area.name, " for player: ", triggering_player.name)
 	
-func unregister_area(area : InteractionArea):
-	print("Unregistering interaction area: ", area.name)
-	var index = active_areas.find(area)
-	if index != -1 :
-		active_areas.remove_at(index)
-	print("Active areas count: ", active_areas.size())
+	if not player_active_areas.has(triggering_player):
+		player_active_areas[triggering_player] = []
+		player_can_interact[triggering_player] = true
+	
+	player_active_areas[triggering_player].push_back(area)
+	print("Active areas count for ", triggering_player.name, ": ", player_active_areas[triggering_player].size())
+	
+func unregister_area(area: InteractionArea, triggering_player: Node):
+	print("Unregistering interaction area: ", area.name, " for player: ", triggering_player.name)
+	
+	if not player_active_areas.has(triggering_player):
+		return
+		
+	var index = player_active_areas[triggering_player].find(area)
+	if index != -1:
+		player_active_areas[triggering_player].remove_at(index)
+	print("Active areas count for ", triggering_player.name, ": ", player_active_areas[triggering_player].size())
 
 func _process(delta):
-	player = get_tree().get_first_node_in_group("player")
-	playerSprite = get_tree().get_first_node_in_group("playerSprite")
-
-	if active_areas.size() > 0 && can_interact : 
-		active_areas.sort_custom(_sort_by_distance_to_player)
-		label.text =  base_text + active_areas[0].action_name
-		label.global_position = active_areas[0].global_position
+	# Handle interaction display for the closest player to any interaction
+	var closest_player = null
+	var closest_area = null
+	var shortest_distance = INF
+	
+	# Find the closest player-area combination
+	for player in player_active_areas.keys():
+		if not player_can_interact.get(player, true):
+			continue
+			
+		var areas = player_active_areas[player]
+		if areas.size() > 0:
+			areas.sort_custom(func(area1, area2): return _sort_by_distance_to_player(area1, area2, player))
+			var distance = player.global_position.distance_to(areas[0].global_position)
+			
+			if distance < shortest_distance:
+				shortest_distance = distance
+				closest_player = player
+				closest_area = areas[0]
+	
+	# Display label for the closest interaction
+	if closest_area and closest_player:
+		print("label show")
+		label.text = base_text + closest_area.action_name
+		label.global_position = closest_area.global_position
+		print(label.global_position)
 		label.global_position.y -= 100
-		label.global_position.x -= label.size.x /2
+		label.global_position.x -= label.size.x / 2
 		label.show()
-	else : 
+	else:
+		print("label hide")
 		label.hide()
-		
 
-func _sort_by_distance_to_player(area1, area2):
+func _sort_by_distance_to_player(area1, area2, player):
 	var area1_to_player = player.global_position.distance_to(area1.global_position)
 	var area2_to_player = player.global_position.distance_to(area2.global_position)
 	return area1_to_player < area2_to_player
 
-func _input(event):
-	if event.is_action_pressed("interact") && can_interact:
-		print("Interact key pressed")
-		if active_areas.size() > 0 :
-			print("Attempting to interact with: ", active_areas[0].name)
-			can_interact = false
-			label.hide()
-			
-			await active_areas[0].interact.call()
-			
-			can_interact = true
+func handle_player_interaction(player: Node):
+	if not player_can_interact.get(player, true):
+		return
+		
+	if not player_active_areas.has(player) or player_active_areas[player].size() == 0:
+		return
+	
+	print("Player ", player.name, " attempting to interact")
+	var areas = player_active_areas[player]
+	areas.sort_custom(func(area1, area2): return _sort_by_distance_to_player(area1, area2, player))
+	
+	var closest_area = areas[0]
+	print("Attempting to interact with: ", closest_area.name)
+	
+	player_can_interact[player] = false
+	label.hide()
+	
+	await closest_area.interact.call()
+	
+	player_can_interact[player] = true

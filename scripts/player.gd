@@ -5,6 +5,8 @@ const ATTACK_COOLDOWN = 0.5
 const ATTACK_DAMAGE = 1
 const ATTACK_RANGE = 300.0
 
+@export var player_id: int = 1  # 1 for Player 1, 2 for Player 2
+
 var has_knife := false
 var attack_cooldown := ATTACK_COOLDOWN
 var can_attack := true
@@ -18,6 +20,10 @@ var weapon_original_position: Vector2 = Vector2.ZERO
 
 var facing_direction := Vector2.RIGHT
 
+# Player-specific stats
+var deaths := 0
+var fluid_left := 100
+
 @onready var _animated_sprite := $AnimatedSprite2D
 
 # Preload or load variant resources
@@ -26,7 +32,7 @@ var sprite_variants = {
 	"angry": preload("res://player/variants/angry.tres"),
 	"smart": preload("res://player/variants/smart.tres"),
 	"shy": preload("res://player/variants/shy.tres") 
-	}
+}
 var variant_keys = sprite_variants.keys()
 
 @onready var _footstep_audio := $FootStepAudio
@@ -39,31 +45,50 @@ var footstep_sounds = [
 	preload("res://assets/sounds/Footsteps 3.wav")
 ]
 
-
 func _ready() -> void:
 	# Store the initial position for respawning
 	initial_position = position
 	# Add the player to the "player" group
-	# Load a random variant at startup OVERRIDE WHEN CHARACTER CREATION IS IMPLEMENTED
+	add_to_group("player")
+	
+	# Set different spawn positions for different players
+	if player_id == 2:
+		position.x += 100  # Offset Player 2 spawn position
+	
+	# Load a random variant at startup
 	randomize()
 	set_sprite_variant(variant_keys[randi() % variant_keys.size()])
 	
+	# Set player name for identification
+	name = "Player" + str(player_id)
+
 func set_sprite_variant(variant_name: String) -> void:
 	if sprite_variants.has(variant_name):
 		_animated_sprite.sprite_frames = sprite_variants[variant_name]
 	else:
 		push_error("Variant '%s' not found!" % variant_name)
 
+#func _input(event):
+	#if event.is_action_pressed("interact"):
+		#InteractionManager.handle_player_interaction(self)
+
 func _physics_process(delta: float) -> void:
-	# Movement
+	# Movement with player-specific input
 	var input_vector := Vector2.ZERO
-	input_vector.x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
-	input_vector.y = Input.get_action_strength("move_down") - Input.get_action_strength("move_up")
-	input_vector = input_vector.normalized()
 	
+	if player_id == 1:
+		# Player 1 controls (WASD)
+		input_vector.x = Input.get_action_strength("p1_move_right") - Input.get_action_strength("p1_move_left")
+		input_vector.y = Input.get_action_strength("p1_move_down") - Input.get_action_strength("p1_move_up")
+	elif player_id == 2:
+		# Player 2 controls (Arrow keys)
+		input_vector.x = Input.get_action_strength("p2_move_right") - Input.get_action_strength("p2_move_left")
+		input_vector.y = Input.get_action_strength("p2_move_down") - Input.get_action_strength("p2_move_up")
+	
+	input_vector = input_vector.normalized()
 	velocity = input_vector * SPEED
 
-	
+	# Handle sprite flipping and weapon positioning
 	if input_vector.x > 0:
 		$AnimatedSprite2D.flip_h = false
 		facing_direction = Vector2.RIGHT
@@ -88,14 +113,18 @@ func _physics_process(delta: float) -> void:
 		$AnimatedSprite2D.play("idle")
 		_footstep_timer.stop()
 
-
 	move_and_slide()
 
-	# Attack logic
-	if has_knife and Input.is_action_just_pressed("attack") and can_attack:
+	# Attack logic with player-specific input
+	var attack_input = ""
+	if player_id == 1:
+		attack_input = "p1_attack"
+	elif player_id == 2:
+		attack_input = "p2_attack"
+	
+	if has_knife and Input.is_action_just_pressed(attack_input) and can_attack:
 		perform_attack()
-			
-		
+
 func pickup_weapon(weapon: Node2D) -> void:
 	has_knife = true
 	current_weapon = weapon
@@ -108,25 +137,22 @@ func pickup_weapon(weapon: Node2D) -> void:
 	$WeaponSocket.add_child(weapon)
 	weapon.position = Vector2.ZERO
 
-
-
 func perform_attack():
 	if not can_attack or not has_knife:
 		return
 		
 	can_attack = false
 	is_attacking = true
-	print("ATTACK")
+	print("Player %d ATTACK" % player_id)
 	
 	# Store current attack direction based on movement or last direction
 	attack_direction = facing_direction
-
 	
 	# Create attack hitbox
 	var attack_hitbox = Area2D.new()
 	var collision_shape = CollisionShape2D.new()
 	var shape = RectangleShape2D.new()
-	shape.size = Vector2(ATTACK_RANGE, 50)  # Adjust size as needed
+	shape.size = Vector2(ATTACK_RANGE, 50)
 	collision_shape.shape = shape
 	attack_hitbox.add_child(collision_shape)
 	
@@ -142,9 +168,6 @@ func perform_attack():
 	$AttackCooldownTimer.start()
 	$AttackCooldownTimer.wait_time = attack_cooldown
 	
-	# Optional: Add attack animation or effects here
-	# Example: $AnimatedSprite2D.play("attack")
-	
 	# Wait for attack duration
 	await get_tree().create_timer(0.2).timeout
 	is_attacking = false
@@ -155,15 +178,24 @@ func perform_attack():
 	can_attack = true
 
 func _on_attack_hit(body: Node2D) -> void:
-	print("There is someone under your sword")
+	print("Player %d hit something with sword" % player_id)
 	if body.is_in_group("enemy"):
 		# Handle enemy hit
 		if body.has_method("take_damage"):
 			body.take_damage(ATTACK_DAMAGE)
-		print("Hit enemy!")
+		print("Player %d hit enemy!" % player_id)
+	elif body.is_in_group("player") and body != self:
+		# Handle player vs player combat
+		if body.has_method("take_damage_from_player"):
+			body.take_damage_from_player(ATTACK_DAMAGE, self)
+		print("Player %d hit Player %d!" % [player_id, body.player_id])
+
+func take_damage_from_player(damage: int, attacker: Node2D) -> void:
+	print("Player %d took damage from Player %d" % [player_id, attacker.player_id])
+	mark_dead()
 
 func mark_dead() -> void:
-	# Ta bort vapnet och lägg tillbaka det på kartan
+	# Return weapon to map
 	if current_weapon and weapon_original_parent:
 		$WeaponSocket.remove_child(current_weapon)
 		weapon_original_parent.add_child(current_weapon)
@@ -172,18 +204,17 @@ func mark_dead() -> void:
 		has_knife = false
 
 	set_physics_process(false)
-
-	# Hide the player
 	$AnimatedSprite2D.visible = false
-	# Wait a short moment before respawning
+	
+	# Wait before respawning
 	await get_tree().create_timer(1.0).timeout
-	MultiplayerManager.deaths +=1
-	MultiplayerManager.fluidleft -=1
-	if (MultiplayerManager.fluidleft > 0) :
+	deaths += 1
+	fluid_left -= 1
+	
+	if fluid_left > 0:
 		respawn()
-	else : 
+	else:
 		_game_over()
-
 
 func respawn() -> void:
 	# Reset position to initial spawn point
@@ -198,19 +229,25 @@ func respawn() -> void:
 func _game_over() -> void:
 	# Disable player movement and input
 	set_physics_process(false)
-	
 	$AnimatedSprite2D.visible = false
-	# Show game over message
-	var game_over_label = %GameOverLabel
-	game_over_label.text = "GAME OVER\nDeaths: %d" % MultiplayerManager.deaths
 	
-	# Wait a few seconds before restarting
-	await get_tree().create_timer(3.0).timeout
+	# Show game over message for this player
+	print("Player %d GAME OVER - Deaths: %d" % [player_id, deaths])
 	
-	# Restart the game
-	get_tree().reload_current_scene()
+	# You might want to handle this differently for split screen
+	# Maybe show a game over overlay for just this player's viewport
 	
-
+	# Check if both players are dead before restarting
+	var all_players = get_tree().get_nodes_in_group("player")
+	var living_players = 0
+	for player in all_players:
+		if player.fluid_left > 0:
+			living_players += 1
+	
+	if living_players == 0:
+		# All players are dead, restart the game
+		await get_tree().create_timer(3.0).timeout
+		get_tree().reload_current_scene()
 
 func _on_foot_step_timer_timeout() -> void:
 	if velocity.length() > 0:
@@ -218,3 +255,10 @@ func _on_foot_step_timer_timeout() -> void:
 		$FootStepAudio.stream = footstep_sounds[random_index]
 		$FootStepAudio.pitch_scale = randf_range(0.95, 1.05)
 		_footstep_audio.play()
+
+# Getter functions for UI updates
+func get_deaths() -> int:
+	return deaths
+
+func get_fluid_left() -> int:
+	return fluid_left

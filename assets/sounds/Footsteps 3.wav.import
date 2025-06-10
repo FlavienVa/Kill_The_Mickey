@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://d0iruoskqun0r"
+path="res://.godot/imported/Footsteps 3.wav-89c6867447c43d62c21fa9f7ffd79738.sample"
+
+[deps]
+
+source_file="res://assets/sounds/Footsteps 3.wav"
+dest_files=["res://.godot/imported/Footsteps 3.wav-89c6867447c43d62c21fa9f7ffd79738.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
