@@ -3,6 +3,8 @@ extends StaticBody2D
 @onready var interaction_area = $"Interaction Area"
 @onready var sprite = $AnimatedSprite2D
 @onready var hide_timer = $HideTimer
+@onready var player = get_tree().get_first_node_in_group("player")
+
 
 var is_hiding := false
 const HIDE_DURATION := 5.0
@@ -14,7 +16,7 @@ func _ready() -> void:
 	hide_timer.timeout.connect(_on_hide_timer_timeout)
 
 func _hide():
-	if InteractionManager.player:
+	if InteractionManager.player and player.has_method("is_shy") and player.is_shy():
 		if not is_hiding:
 			# Start hiding
 			is_hiding = true

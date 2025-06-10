@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://1i0w4wog5je4"
-path="res://.godot/imported/angrymickey_spritesheet.png-9351990064c624d4c4dce84c5023e5ce.ctex"
+uid="uid://dgbi3rgchavyt"
+path="res://.godot/imported/hammer.png-16afc7bf4e3617f1c1023f5c4fbfa7ea.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/angrymickey_spritesheet.png"
-dest_files=["res://.godot/imported/angrymickey_spritesheet.png-9351990064c624d4c4dce84c5023e5ce.ctex"]
+source_file="res://assets/sprites/hammer.png"
+dest_files=["res://.godot/imported/hammer.png-16afc7bf4e3617f1c1023f5c4fbfa7ea.ctex"]
 
 [params]
 

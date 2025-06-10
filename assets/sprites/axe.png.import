@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://1i0w4wog5je4"
-path="res://.godot/imported/angrymickey_spritesheet.png-9351990064c624d4c4dce84c5023e5ce.ctex"
+uid="uid://dfrg4f1w3km16"
+path="res://.godot/imported/axe.png-0cb17724685ecba1b5e9a9d10930bb48.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/angrymickey_spritesheet.png"
-dest_files=["res://.godot/imported/angrymickey_spritesheet.png-9351990064c624d4c4dce84c5023e5ce.ctex"]
+source_file="res://assets/sprites/axe.png"
+dest_files=["res://.godot/imported/axe.png-0cb17724685ecba1b5e9a9d10930bb48.ctex"]
 
 [params]
 

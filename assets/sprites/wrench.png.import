@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://1i0w4wog5je4"
-path="res://.godot/imported/angrymickey_spritesheet.png-9351990064c624d4c4dce84c5023e5ce.ctex"
+uid="uid://c1qdhfte4ye0a"
+path="res://.godot/imported/wrench.png-3e55cff1ab6310319b996d3cec2f6034.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/angrymickey_spritesheet.png"
-dest_files=["res://.godot/imported/angrymickey_spritesheet.png-9351990064c624d4c4dce84c5023e5ce.ctex"]
+source_file="res://assets/sprites/wrench.png"
+dest_files=["res://.godot/imported/wrench.png-3e55cff1ab6310319b996d3cec2f6034.ctex"]
 
 [params]
 

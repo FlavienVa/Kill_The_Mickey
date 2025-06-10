@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://1i0w4wog5je4"
-path="res://.godot/imported/angrymickey_spritesheet.png-9351990064c624d4c4dce84c5023e5ce.ctex"
+uid="uid://dk10qrpt5is6"
+path="res://.godot/imported/baton.png-8db967c0c5085e00000e79056207fee7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/angrymickey_spritesheet.png"
-dest_files=["res://.godot/imported/angrymickey_spritesheet.png-9351990064c624d4c4dce84c5023e5ce.ctex"]
+source_file="res://assets/sprites/baton.png"
+dest_files=["res://.godot/imported/baton.png-8db967c0c5085e00000e79056207fee7.ctex"]
 
 [params]
 

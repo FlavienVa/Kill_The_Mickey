@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://1i0w4wog5je4"
-path="res://.godot/imported/angrymickey_spritesheet.png-9351990064c624d4c4dce84c5023e5ce.ctex"
+uid="uid://0yfl8nphg1fk"
+path="res://.godot/imported/Door_spritesheet.png-03d8be7731d90958015e7b77aa033978.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/angrymickey_spritesheet.png"
-dest_files=["res://.godot/imported/angrymickey_spritesheet.png-9351990064c624d4c4dce84c5023e5ce.ctex"]
+source_file="res://assets/sprites/Door_spritesheet.png"
+dest_files=["res://.godot/imported/Door_spritesheet.png-03d8be7731d90958015e7b77aa033978.ctex"]
 
 [params]
 

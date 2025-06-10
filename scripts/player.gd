@@ -19,10 +19,9 @@ var weapon_original_parent: Node = null
 var weapon_original_position: Vector2 = Vector2.ZERO
 
 var facing_direction := Vector2.RIGHT
+var weapon_target_rotation: float = 0.0
+var weapon_rotation_speed: float = 20.0  # Increase for faster transition
 
-# Player-specific stats
-var deaths := 0
-var fluid_left := 100
 
 @onready var _animated_sprite := $AnimatedSprite2D
 
@@ -34,6 +33,7 @@ var sprite_variants = {
 	"shy": preload("res://player/variants/shy.tres") 
 }
 var variant_keys = sprite_variants.keys()
+var current_variant = ""
 
 @onready var _footstep_audio := $FootStepAudio
 @onready var _footstep_timer := $FootStepTimer
@@ -50,27 +50,39 @@ func _ready() -> void:
 	initial_position = position
 	# Add the player to the "player" group
 	add_to_group("player")
-	
-	# Set different spawn positions for different players
-	if player_id == 2:
-		position.x += 100  # Offset Player 2 spawn position
-	
-	# Load a random variant at startup
+	# Load a random variant at startup OVERRIDE WHEN CHARACTER CREATION IS IMPLEMENTED
 	randomize()
 	set_sprite_variant(variant_keys[randi() % variant_keys.size()])
 	
-	# Set player name for identification
-	name = "Player" + str(player_id)
+func _process(delta: float) -> void:
+	if current_weapon:
+		var diff = weapon_target_rotation - current_weapon.rotation_degrees
+		current_weapon.rotation_degrees += diff * delta * weapon_rotation_speed
+	# Placing traps
+	if Input.is_action_just_pressed("place trap") and can_place_trap and current_variant == "happy" and traps_remaining > 0:
+		place_trap()
 
+
+	
 func set_sprite_variant(variant_name: String) -> void:
 	if sprite_variants.has(variant_name):
 		_animated_sprite.sprite_frames = sprite_variants[variant_name]
+		current_variant = variant_name
 	else:
 		push_error("Variant '%s' not found!" % variant_name)
 
-#func _input(event):
-	#if event.is_action_pressed("interact"):
-		#InteractionManager.handle_player_interaction(self)
+# Method for doors
+func is_smart():
+	if current_variant == "smart":
+		return true
+	else:
+		return false
+# Method for hiding
+func is_shy():
+	if current_variant == "shy":
+		return true
+	else:
+		return false
 
 func _physics_process(delta: float) -> void:
 	# Movement with player-specific input
@@ -94,13 +106,20 @@ func _physics_process(delta: float) -> void:
 		facing_direction = Vector2.RIGHT
 		if has_knife and current_weapon:
 			current_weapon.scale.x = abs(current_weapon.scale.x)
+			$WeaponSocket.position.x = abs($WeaponSocket.position.x)
+
+			
+
 	elif input_vector.x < 0:
 		$AnimatedSprite2D.flip_h = true
 		facing_direction = Vector2.LEFT
 		if has_knife and current_weapon:
 			current_weapon.scale.x = -abs(current_weapon.scale.x)
+			$WeaponSocket.position.x = -abs($WeaponSocket.position.x)
+			
 	elif input_vector.y != 0:
 		facing_direction = Vector2(0, input_vector.y)
+	
 		
 	# Play animation and footstep sound
 	if input_vector != Vector2.ZERO:
@@ -143,10 +162,22 @@ func perform_attack():
 		
 	can_attack = false
 	is_attacking = true
-	print("Player %d ATTACK" % player_id)
+
+	# Animate weapon forward during attack
+	if current_weapon:
+		weapon_target_rotation = 90.0 if not $AnimatedSprite2D.flip_h else -90.0
+
+			
+
+	# Animate weapon rotation (swinging down)
+	if current_weapon:
+		current_weapon.rotation_degrees = -45 if not $AnimatedSprite2D.flip_h else 45
+
+	print("ATTACK")
 	
 	# Store current attack direction based on movement or last direction
 	attack_direction = facing_direction
+	
 	
 	# Create attack hitbox
 	var attack_hitbox = Area2D.new()
@@ -167,9 +198,18 @@ func perform_attack():
 	# Visual feedback
 	$AttackCooldownTimer.start()
 	$AttackCooldownTimer.wait_time = attack_cooldown
+
+
+	# Optional: Add attack animation or effects here
+	#$AnimatedSprite2D.play("attack")
+	
 	
 	# Wait for attack duration
 	await get_tree().create_timer(0.2).timeout
+		# Reset weapon to original position
+	if current_weapon:
+		weapon_target_rotation = 0.0
+
 	is_attacking = false
 	attack_hitbox.queue_free()
 	
@@ -183,30 +223,29 @@ func _on_attack_hit(body: Node2D) -> void:
 		# Handle enemy hit
 		if body.has_method("take_damage"):
 			body.take_damage(ATTACK_DAMAGE)
-		print("Player %d hit enemy!" % player_id)
-	elif body.is_in_group("player") and body != self:
-		# Handle player vs player combat
-		if body.has_method("take_damage_from_player"):
-			body.take_damage_from_player(ATTACK_DAMAGE, self)
-		print("Player %d hit Player %d!" % [player_id, body.player_id])
-
-func take_damage_from_player(damage: int, attacker: Node2D) -> void:
-	print("Player %d took damage from Player %d" % [player_id, attacker.player_id])
-	mark_dead()
+		print("Hit enemy!")
+	if body.is_in_group("doors"):
+		if body.has_method("take_damage"):
+			body.take_damage()
+	
 
 func mark_dead() -> void:
-	# Return weapon to map
+	
 	if current_weapon and weapon_original_parent:
+		
 		$WeaponSocket.remove_child(current_weapon)
 		weapon_original_parent.add_child(current_weapon)
+		current_weapon.to_original()
 		current_weapon.position = weapon_original_position
+		
 		current_weapon = null
 		has_knife = false
 
 	set_physics_process(false)
 	$AnimatedSprite2D.visible = false
+
 	
-	# Wait before respawning
+	# Wait a short moment before respawning
 	await get_tree().create_timer(1.0).timeout
 	deaths += 1
 	fluid_left -= 1
@@ -223,8 +262,14 @@ func respawn() -> void:
 	set_physics_process(true)
 	# Change the variant
 	set_sprite_variant(variant_keys[randi() % variant_keys.size()])
+	# Restock the traps
+	traps_remaining = 5
 	# Make the player visible again
 	$AnimatedSprite2D.visible = true
+	if current_weapon:
+		current_weapon.visible = true
+
+	
 	
 func _game_over() -> void:
 	# Disable player movement and input
@@ -255,10 +300,19 @@ func _on_foot_step_timer_timeout() -> void:
 		$FootStepAudio.stream = footstep_sounds[random_index]
 		$FootStepAudio.pitch_scale = randf_range(0.95, 1.05)
 		_footstep_audio.play()
+		
+@export var trap_scene: PackedScene = preload("res://scenes/trap.tscn")
+var trap_cooldown := 4.0
+var can_place_trap := true
+var traps_remaining := 5
 
-# Getter functions for UI updates
-func get_deaths() -> int:
-	return deaths
-
-func get_fluid_left() -> int:
-	return fluid_left
+func place_trap():
+	var trap = trap_scene.instantiate()
+	trap.global_position = global_position
+	trap.trap_owner = self
+	get_tree().current_scene.add_child(trap)
+	traps_remaining -= 1
+	can_place_trap = false
+	await get_tree().create_timer(trap_cooldown).timeout
+	can_place_trap = true
+	
