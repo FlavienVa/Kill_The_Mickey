@@ -22,8 +22,19 @@ var facing_direction := Vector2.RIGHT
 var weapon_target_rotation: float = 0.0
 var weapon_rotation_speed: float = 20.0  # Increase for faster transition
 
+@onready var _health_bar := $"HealthBar"
+
+var health := 3
+var max_health := 3
+var is_dead := false
 var deaths = 0
 var fluid_left = 4
+
+var knockback_velocity := Vector2.ZERO
+var knockback_timer := 0.0
+const KNOCKBACK_DURATION := 0.2
+const KNOCKBACK_FORCE := 600.0
+
 
 @onready var _animated_sprite := $AnimatedSprite2D
 
@@ -57,6 +68,7 @@ func _ready() -> void:
 	else:
 		PlayerManager.register_player(self, 2)
 
+
 	
 	# Load a random variant at startup OVERRIDE WHEN CHARACTER CREATION IS IMPLEMENTED
 	randomize()
@@ -66,6 +78,7 @@ func _process(delta: float) -> void:
 	if current_weapon:
 		var diff = weapon_target_rotation - current_weapon.rotation_degrees
 		current_weapon.rotation_degrees += diff * delta * weapon_rotation_speed
+		
 	# Placing traps
 	#if Input.is_action_just_pressed("place trap") and can_place_trap and current_variant == "happy" and traps_remaining > 0:
 		#pass
@@ -164,7 +177,7 @@ func pickup_weapon(weapon: Node2D) -> void:
 
 	$WeaponSocket.add_child(weapon)
 	weapon.position = Vector2.ZERO
-
+	
 func perform_attack():
 	if not can_attack or not has_knife:
 		return
@@ -203,7 +216,6 @@ func perform_attack():
 	
 	# Connect to detect hits
 	attack_hitbox.body_entered.connect(_on_attack_hit)
-	
 	# Visual feedback
 	$AttackCooldownTimer.start()
 	$AttackCooldownTimer.wait_time = attack_cooldown
@@ -236,7 +248,45 @@ func _on_attack_hit(body: Node2D) -> void:
 	if body.is_in_group("doors"):
 		if body.has_method("take_damage"):
 			body.take_damage()
+	if body.is_in_group("player") and body != self:
+		body.take_damage(ATTACK_DAMAGE, global_position)
 	
+func take_damage(amount: int, source_position: Vector2) -> void:
+	if is_dead:
+		return
+
+	# Reduce health first
+	health -= amount
+	health = clamp(health, 0, max_health)
+
+	update_health_bar()
+
+	# Only apply knockback if we're not dead
+	if health > 0:
+		var knockback_direction = (position - source_position).normalized()
+		apply_knockback(knockback_direction)
+
+	_health_bar.value = health
+
+	if health <= 0:
+		is_dead = true
+		mark_dead()
+
+func apply_knockback(direction: Vector2) -> void:
+	knockback_velocity = direction * KNOCKBACK_FORCE
+	knockback_timer = KNOCKBACK_DURATION
+	
+func update_health_bar():
+	var health_ratio = float(health) / max_health
+	_health_bar.value = health
+
+	# Calculate color: green at full, red at zero
+	var red = 1.0 - health_ratio
+	var green = health_ratio
+	var color = Color(red, green, 0)
+
+	_health_bar.add_theme_color_override("fill", color)
+
 
 func mark_dead() -> void:
 	
@@ -277,6 +327,10 @@ func respawn() -> void:
 	$AnimatedSprite2D.visible = true
 	if current_weapon:
 		current_weapon.visible = true
+	# Reset health
+	health = max_health
+	_health_bar.value = health
+	is_dead = false
 
 	
 	
@@ -329,3 +383,6 @@ func place_trap():
 	await get_tree().create_timer(trap_cooldown).timeout
 	can_place_trap = true
 	
+
+
+# Replace with function body.
