@@ -14,6 +14,6 @@ func _ready() -> void:
 
 
 func _collect_object():
-	InteractionManager.player.has_knife = true
-	_pickup(InteractionManager.player)
+	interaction_area.current_player.has_knife = true
+	_pickup(interaction_area.current_player)
 	queue_free()

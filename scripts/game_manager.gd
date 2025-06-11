@@ -1,6 +1,6 @@
 extends Node
 
-@onready var label = $GridContainer/SubViewportContainer/SubViewport/Camera2D/DeathCounterLabel
+#@onready var label = $GridContainer/SubViewportContainer/SubViewport/Camera2D/DeathCounterLabel
 
 
 

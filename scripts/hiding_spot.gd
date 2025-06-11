@@ -3,7 +3,6 @@ extends StaticBody2D
 @onready var interaction_area = $"Interaction Area"
 @onready var sprite = $AnimatedSprite2D
 @onready var hide_timer = $HideTimer
-@onready var player = get_tree().get_first_node_in_group("player")
 
 
 var is_hiding := false
@@ -16,14 +15,15 @@ func _ready() -> void:
 	hide_timer.timeout.connect(_on_hide_timer_timeout)
 
 func _hide():
-	if InteractionManager.player and player.has_method("is_shy") and player.is_shy():
+	var player = interaction_area.current_player
+	if player and player.has_method("is_shy") and player.is_shy():
 		if not is_hiding:
 			# Start hiding
 			is_hiding = true
 			
 			# Hide the player
-			InteractionManager.playerSprite.visible = false
-			InteractionManager.player.set_physics_process(false)
+			#InteractionManager.playerSprite.visible = false
+			player.set_physics_process(false)
 			
 			# Start the hide timer
 			hide_timer.start()
@@ -32,10 +32,11 @@ func _hide():
 			_unhide_player()
 
 func _unhide_player():
-	if InteractionManager.player:
+	var player = interaction_area.current_player
+	if player:
 		# Show the player again
-		InteractionManager.playerSprite.visible = true
-		InteractionManager.player.set_physics_process(true)
+		#InteractionManager.playerSprite.visible = true
+		player.set_physics_process(true)
 		is_hiding = false
 		hide_timer.stop()
 

@@ -22,7 +22,8 @@ func _ready():
 	interaction_area.interact = Callable(self, "_open")
 
 func _open():
-	if InteractionManager.player and not is_destroyed:
+	var player = interaction_area.current_player
+	if player and not is_destroyed:
 		if not is_open and player.has_method("is_smart") and player.is_smart():
 			# Open the door
 			is_open = true

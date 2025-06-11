@@ -51,15 +51,15 @@ func _process(delta):
 	
 	# Display label for the closest interaction
 	if closest_area and closest_player:
-		print("label show")
+		#print("label show")
 		label.text = base_text + closest_area.action_name
 		label.global_position = closest_area.global_position
-		print(label.global_position)
+		#print(label.global_position)
 		label.global_position.y -= 100
 		label.global_position.x -= label.size.x / 2
 		label.show()
 	else:
-		print("label hide")
+		#print("label hide")
 		label.hide()
 
 func _sort_by_distance_to_player(area1, area2, player):
@@ -68,6 +68,7 @@ func _sort_by_distance_to_player(area1, area2, player):
 	return area1_to_player < area2_to_player
 
 func handle_player_interaction(player: Node):
+	print("handle player interaction called")
 	if not player_can_interact.get(player, true):
 		return
 		

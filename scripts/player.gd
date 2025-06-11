@@ -22,6 +22,8 @@ var facing_direction := Vector2.RIGHT
 var weapon_target_rotation: float = 0.0
 var weapon_rotation_speed: float = 20.0  # Increase for faster transition
 
+var deaths = 0
+var fluid_left = 4
 
 @onready var _animated_sprite := $AnimatedSprite2D
 
@@ -50,6 +52,12 @@ func _ready() -> void:
 	initial_position = position
 	# Add the player to the "player" group
 	add_to_group("player")
+	if name == "Player1":
+		PlayerManager.register_player(self, 1)
+	else:
+		PlayerManager.register_player(self, 2)
+
+	
 	# Load a random variant at startup OVERRIDE WHEN CHARACTER CREATION IS IMPLEMENTED
 	randomize()
 	set_sprite_variant(variant_keys[randi() % variant_keys.size()])
@@ -59,8 +67,9 @@ func _process(delta: float) -> void:
 		var diff = weapon_target_rotation - current_weapon.rotation_degrees
 		current_weapon.rotation_degrees += diff * delta * weapon_rotation_speed
 	# Placing traps
-	if Input.is_action_just_pressed("place trap") and can_place_trap and current_variant == "happy" and traps_remaining > 0:
-		place_trap()
+	#if Input.is_action_just_pressed("place trap") and can_place_trap and current_variant == "happy" and traps_remaining > 0:
+		#pass
+		#place_trap()
 
 
 	
@@ -305,6 +314,10 @@ func _on_foot_step_timer_timeout() -> void:
 var trap_cooldown := 4.0
 var can_place_trap := true
 var traps_remaining := 5
+
+func _unhandled_input(event):
+	if event.is_action_pressed("player1_interact" if name == "Player1" else "player2_interact"):
+		InteractionManager.handle_player_interaction(self)
 
 func place_trap():
 	var trap = trap_scene.instantiate()
