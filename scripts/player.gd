@@ -32,8 +32,8 @@ var fluid_left = 4
 
 var knockback_velocity := Vector2.ZERO
 var knockback_timer := 0.0
-const KNOCKBACK_DURATION := 0.2
-const KNOCKBACK_FORCE := 600.0
+
+var is_immobilized := false
 
 
 @onready var _animated_sprite := $AnimatedSprite2D
@@ -80,10 +80,11 @@ func _process(delta: float) -> void:
 		current_weapon.rotation_degrees += diff * delta * weapon_rotation_speed
 		
 	# Placing traps
-	#if Input.is_action_just_pressed("place trap") and can_place_trap and current_variant == "happy" and traps_remaining > 0:
-		#pass
-		#place_trap()
-
+	if player_id == 1 and Input.is_action_just_pressed("p1_placetrap") and can_place_trap and current_variant == "happy" and traps_remaining > 0:		
+		place_trap()
+	elif player_id == 2 and Input.is_action_just_pressed("p2_placetrap") and can_place_trap and current_variant == "happy" and traps_remaining > 0:		
+		place_trap()
+	
 
 	
 func set_sprite_variant(variant_name: String) -> void:
@@ -109,18 +110,27 @@ func is_shy():
 func _physics_process(delta: float) -> void:
 	# Movement with player-specific input
 	var input_vector := Vector2.ZERO
-	
-	if player_id == 1:
-		# Player 1 controls (WASD)
-		input_vector.x = Input.get_action_strength("p1_move_right") - Input.get_action_strength("p1_move_left")
-		input_vector.y = Input.get_action_strength("p1_move_down") - Input.get_action_strength("p1_move_up")
-	elif player_id == 2:
-		# Player 2 controls (Arrow keys)
-		input_vector.x = Input.get_action_strength("p2_move_right") - Input.get_action_strength("p2_move_left")
-		input_vector.y = Input.get_action_strength("p2_move_down") - Input.get_action_strength("p2_move_up")
-	
-	input_vector = input_vector.normalized()
-	velocity = input_vector * SPEED
+	if knockback_timer > 0:
+		knockback_timer -= delta
+		velocity = knockback_velocity
+	# Triggered a trap
+	elif is_immobilized:
+		velocity = Vector2.ZERO
+		move_and_slide()
+		return
+	# Normal movement
+	else:
+		if player_id == 1:
+			# Player 1 controls (WASD)
+			input_vector.x = Input.get_action_strength("p1_move_right") - Input.get_action_strength("p1_move_left")
+			input_vector.y = Input.get_action_strength("p1_move_down") - Input.get_action_strength("p1_move_up")
+		elif player_id == 2:
+			# Player 2 controls (Arrow keys)
+			input_vector.x = Input.get_action_strength("p2_move_right") - Input.get_action_strength("p2_move_left")
+			input_vector.y = Input.get_action_strength("p2_move_down") - Input.get_action_strength("p2_move_up")
+		
+		input_vector = input_vector.normalized()
+		velocity = input_vector * SPEED
 
 	# Handle sprite flipping and weapon positioning
 	if input_vector.x > 0:
@@ -177,6 +187,10 @@ func pickup_weapon(weapon: Node2D) -> void:
 
 	$WeaponSocket.add_child(weapon)
 	weapon.position = Vector2.ZERO
+	weapon.visible = true
+	weapon.scale = Vector2.ONE
+	weapon.z_index = 10
+	weapon.modulate = Color(1, 1, 1, 1)
 	
 func perform_attack():
 	if not can_attack or not has_knife:
@@ -264,7 +278,8 @@ func take_damage(amount: int, source_position: Vector2) -> void:
 	# Only apply knockback if we're not dead
 	if health > 0:
 		var knockback_direction = (position - source_position).normalized()
-		apply_knockback(knockback_direction)
+		knockback_velocity = knockback_direction * 1000
+		knockback_timer = 0.3
 
 	_health_bar.value = health
 
@@ -272,9 +287,7 @@ func take_damage(amount: int, source_position: Vector2) -> void:
 		is_dead = true
 		mark_dead()
 
-func apply_knockback(direction: Vector2) -> void:
-	knockback_velocity = direction * KNOCKBACK_FORCE
-	knockback_timer = KNOCKBACK_DURATION
+
 	
 func update_health_bar():
 	var health_ratio = float(health) / max_health
@@ -364,24 +377,37 @@ func _on_foot_step_timer_timeout() -> void:
 		$FootStepAudio.pitch_scale = randf_range(0.95, 1.05)
 		_footstep_audio.play()
 		
-@export var trap_scene: PackedScene = preload("res://scenes/trap.tscn")
-var trap_cooldown := 4.0
-var can_place_trap := true
-var traps_remaining := 5
+
 
 func _unhandled_input(event):
 	if event.is_action_pressed("player1_interact" if name == "Player1" else "player2_interact"):
 		InteractionManager.handle_player_interaction(self)
 
+#Trap logic
+@export var trap_scene: PackedScene = preload("res://scenes/trap.tscn")
+var trap_cooldown := 4.0
+var can_place_trap := true
+var traps_remaining := 5
+
 func place_trap():
 	var trap = trap_scene.instantiate()
-	trap.global_position = global_position
+	trap.global_position = self.position
 	trap.trap_owner = self
-	get_tree().current_scene.add_child(trap)
+	get_parent().add_child(trap)
 	traps_remaining -= 1
 	can_place_trap = false
 	await get_tree().create_timer(trap_cooldown).timeout
 	can_place_trap = true
+
+func immobilize(duration):
+	if is_immobilized:
+		return  # Already immobilized
+
+	is_immobilized = true
+	$AnimatedSprite2D.modulate = Color(1, 1, 1, 0.5)  # Optional: visual feedback
+	await get_tree().create_timer(duration).timeout
+	is_immobilized = false
+	$AnimatedSprite2D.modulate = Color(1, 1, 1, 1)  # Restore normal visuals
 	
 
 

@@ -22,7 +22,7 @@ func _hide():
 			is_hiding = true
 			
 			# Hide the player
-			#InteractionManager.playerSprite.visible = false
+			player.visible = false
 			player.set_physics_process(false)
 			
 			# Start the hide timer
@@ -35,7 +35,7 @@ func _unhide_player():
 	var player = interaction_area.current_player
 	if player:
 		# Show the player again
-		#InteractionManager.playerSprite.visible = true
+		player.visible = true
 		player.set_physics_process(true)
 		is_hiding = false
 		hide_timer.stop()

@@ -4,7 +4,6 @@ extends StaticBody2D
 @onready var interaction_area = $"Interaction Area"
 @onready var _audio = $AudioStreamPlayer2D
 @onready var _sprite = $Sprite2D
-@onready var area = $Area2D
 
 @onready var player = get_tree().get_first_node_in_group("player")
 

@@ -12,6 +12,7 @@ func _on_body_entered(body):
 		return
 	if body.is_in_group("player"):
 		# Apply effect (e.g., damage)
-		if body.has_method("take_damage"):
-			body.take_damage(damage)
+		if body.has_method("immobilize"):
+			body.immobilize(5)
 		print("Trap triggered by:", body.name)
+		queue_free()
