@@ -26,16 +26,19 @@ func _open():
 		if not is_open and player.has_method("is_smart") and player.is_smart():
 			# Open the door
 			is_open = true
+			_audio.play()
+
 		elif player.has_method("is_smart") and player.is_smart():
 			#Close the door
 			is_open = false
+			_audio.play()
+
 	if is_open:
 		_sprite.frame = 1 
 		_collision.disabled = true  # disable collision when open
 	else: 
 		_sprite.frame = 0
 		_collision.disabled = false  
-	_audio.play()
 	
 func take_damage() -> void:
 	if is_destroyed:

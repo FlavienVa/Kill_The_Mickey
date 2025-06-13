@@ -211,6 +211,8 @@ func perform_attack():
 
 	print("ATTACK")
 	
+	$WeaponSwingAudio.play()
+	
 	# Store current attack direction based on movement or last direction
 	attack_direction = facing_direction
 	
@@ -274,7 +276,6 @@ func take_damage(amount: int, source_position: Vector2) -> void:
 	health = clamp(health, 0, max_health)
 
 	update_health_bar()
-
 	# Only apply knockback if we're not dead
 	if health > 0:
 		var knockback_direction = (position - source_position).normalized()
@@ -282,6 +283,8 @@ func take_damage(amount: int, source_position: Vector2) -> void:
 		knockback_timer = 0.3
 
 	_health_bar.value = health
+	
+	$DamageTakenAudio.play()
 
 	if health <= 0:
 		is_dead = true
