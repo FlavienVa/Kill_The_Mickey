@@ -1,7 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://bndpgu0c7tlr6"]
+[gd_scene load_steps=8 format=3 uid="uid://bndpgu0c7tlr6"]
 
 [ext_resource type="Script" uid="uid://v4sqeqywc10n" path="res://scripts/player.gd" id="1_g2els"]
 [ext_resource type="SpriteFrames" uid="uid://c8ga15eqyabxr" path="res://player/variants/shy.tres" id="2_qhqgy"]
+[ext_resource type="AudioStream" uid="uid://cljobawfdgtn0" path="res://assets/sounds/damage.wav" id="3_qhqgy"]
+[ext_resource type="AudioStream" uid="uid://cyiic4cqsxlr4" path="res://assets/sounds/swing.wav" id="4_dqkch"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g2els"]
 size = Vector2(62, 201)
@@ -36,7 +38,8 @@ one_shot = true
 
 [node name="RespawnTimer" type="Timer" parent="."]
 
-[node name="FootStepAudio" type="AudioStreamPlayer2D" parent="."]
+[node name="FootStepAudio" type="AudioStreamPlayer" parent="."]
+volume_db = -14.22
 
 [node name="FootStepTimer" type="Timer" parent="."]
 wait_time = 0.325
@@ -56,5 +59,13 @@ step = 1.0
 value = 3.0
 fill_mode = 1
 show_percentage = false
+
+[node name="DamageTakenAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_qhqgy")
+volume_db = -5.622
+
+[node name="WeaponSwingAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_dqkch")
+volume_db = -5.622
 
 [connection signal="timeout" from="FootStepTimer" to="." method="_on_foot_step_timer_timeout"]
