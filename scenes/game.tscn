@@ -145,12 +145,12 @@ scale = Vector2(10.9766, 10.9766)
 script = ExtResource("12_kvuet")
 
 [node name="Sprite2D" type="Sprite2D" parent="PrinterV1"]
-scale = Vector2(1, 1)
+position = Vector2(2.45978, 1.18433)
+scale = Vector2(0.71637, 0.707829)
 texture = ExtResource("9_0tnpc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PrinterV1"]
 position = Vector2(2.09534, -1.8676)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_rysoc")
 
 [node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
@@ -196,8 +196,14 @@ position = Vector2(7866, -2026)
 
 [node name="Player2" parent="." instance=ExtResource("17_rysoc")]
 position = Vector2(384, -459)
+collision_layer = 2
+collision_mask = 1
+printer_path = NodePath("../PrinterV1")
 
 [node name="Player1" parent="." instance=ExtResource("17_rysoc")]
+collision_layer = 2
+collision_mask = 1
+printer_path = NodePath("../PrinterV1")
 
 [node name="gun" parent="." instance=ExtResource("18_ssvqc")]
 position = Vector2(9787, 2975)

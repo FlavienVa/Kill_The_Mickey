@@ -1,8 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://d362yujslti25"]
+[gd_scene load_steps=5 format=3 uid="uid://dltjd84qpgay2"]
 
 [ext_resource type="PackedScene" uid="uid://bkfgf4vgexmva" path="res://scenes/game.tscn" id="1_onqr8"]
-[ext_resource type="Script" uid="uid://520n1wrslr" path="res://scripts/game_scene.gd" id="1_ycayy"]
-[ext_resource type="Script" uid="uid://b41u264oeejau" path="res://scripts/camera_2d.gd" id="2_bw6k5"]
+[ext_resource type="Script" path="res://scripts/game_scene.gd" id="1_ycayy"]
+[ext_resource type="Script" path="res://scripts/camera_2d.gd" id="2_bw6k5"]
 [ext_resource type="PackedScene" uid="uid://7g766rj1gjmp" path="res://scenes/InteractionManager.tscn" id="3_bw6k5"]
 
 [node name="GameScene" type="Control"]

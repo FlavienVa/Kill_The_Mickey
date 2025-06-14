@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://bndpgu0c7tlr6"]
+[gd_scene load_steps=8 format=3 uid="uid://bndpgu0c7tlr6"]
 
 [ext_resource type="Script" uid="uid://v4sqeqywc10n" path="res://scripts/player.gd" id="1_g2els"]
 [ext_resource type="SpriteFrames" uid="uid://c8ga15eqyabxr" path="res://player/variants/shy.tres" id="2_qhqgy"]
 [ext_resource type="AudioStream" uid="uid://d1w6eabf6xvhw" path="res://assets/sounds/swing.wav" id="4_dqkch"]
+[ext_resource type="FontFile" uid="uid://vgl0sm2xl6rm" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="4_qlg0r"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g2els"]
 size = Vector2(62, 201)
@@ -65,5 +66,14 @@ volume_db = -5.622
 [node name="WeaponSwingAudio" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_dqkch")
 volume_db = -5.622
+
+[node name="OtherDiedLabel" type="Label" parent="."]
+offset_left = -664.0
+offset_top = 91.0
+offset_right = 679.0
+offset_bottom = 212.0
+theme_override_fonts/font = ExtResource("4_qlg0r")
+theme_override_font_sizes/font_size = 41
+horizontal_alignment = 1
 
 [connection signal="timeout" from="FootStepTimer" to="." method="_on_foot_step_timer_timeout"]

@@ -38,6 +38,8 @@ var knockback_timer := 0.0
 
 var is_immobilized := false
 
+@export var printer_path: NodePath
+@onready var _printer := get_node(printer_path)
 
 @onready var _animated_sprite := $AnimatedSprite2D
 
@@ -296,6 +298,8 @@ func _on_attack_hit(body: Node2D) -> void:
 			body.take_damage()
 	if body.is_in_group("player") and body != self:
 		body.take_damage(ATTACK_DAMAGE, global_position)
+	if body.is_in_group("printer"):
+		body.take_damage(ATTACK_DAMAGE, global_position)
 	
 func take_damage(amount: int, source_position: Vector2) -> void:
 	if is_dead:
@@ -345,6 +349,8 @@ func mark_dead() -> void:
 		
 		current_weapon = null
 		has_knife = false
+	
+	_health_bar.visible = false
 
 	set_physics_process(false)
 	$AnimatedSprite2D.visible = false
@@ -357,14 +363,15 @@ func mark_dead() -> void:
 	ui.update_fluid(fluid_left)
 	ui.update_deaths(deaths)
 	
-	if fluid_left > 0:
+	if fluid_left > 0 and not _printer.is_destroyed:
 		respawn()
 	else:
 		_game_over()
 
 func respawn() -> void:
 	# Reset position to initial spawn point
-	position = initial_position
+	position = initial_position 
+		
 	# Re-enable player movement and input
 	set_physics_process(true)
 	# Change the variant
@@ -376,6 +383,7 @@ func respawn() -> void:
 	if current_weapon:
 		current_weapon.visible = true
 	# Reset health
+	_health_bar.visible = true
 	health = max_health
 	_health_bar.value = health
 	is_dead = false
@@ -397,13 +405,17 @@ func _game_over() -> void:
 	var all_players = get_tree().get_nodes_in_group("player")
 	var living_players = 0
 	for player in all_players:
-		if player.fluid_left > 0:
-			living_players += 1
+		if player.fluid_left > 0 and player != self:
+			var label = player.get_node_or_null("OtherDiedLabel")
+			if label:
+				label.text = "The other player has died!\nYou won!"
+				label.visible = true
 	
 	if living_players == 0:
 		# All players are dead, restart the game
 		await get_tree().create_timer(3.0).timeout
 		get_tree().reload_current_scene()
+		
 
 func _on_foot_step_timer_timeout() -> void:
 	if velocity.length() > 0:

@@ -11,6 +11,7 @@ var original_position: Vector2
 
 func _ready() -> void:
 	original_position = position
+	add_to_group("printer")
 	
 func _process(delta: float) -> void:
 	if shake_timer > 0.0:
