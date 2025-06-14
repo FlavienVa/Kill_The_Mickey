@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+@export var ui: Node = null
+
 const SPEED = 1300.0
 const ATTACK_COOLDOWN = 0.5
 const ATTACK_DAMAGE = 1
@@ -75,6 +77,7 @@ func _ready() -> void:
 	randomize()
 	set_sprite_variant(variant_keys[randi() % variant_keys.size()])
 	
+	
 func _process(delta: float) -> void:
 	if current_weapon:
 		var diff = weapon_target_rotation - current_weapon.rotation_degrees
@@ -85,6 +88,16 @@ func _process(delta: float) -> void:
 		place_trap()
 	elif player_id == 2 and Input.is_action_just_pressed("p2_placetrap") and can_place_trap and current_variant == "happy" and traps_remaining > 0:		
 		place_trap()
+		
+	# Initialize UI
+	if ui:
+		ui.update_fluid(fluid_left)
+		ui.update_deaths(deaths)
+		if current_variant == "happy":
+			ui.show_variant_label("HappyLabel", player_id)
+		else:
+			ui.remove_label("HappyLabel")
+		
 	
 
 	
@@ -104,6 +117,12 @@ func is_smart():
 # Method for hiding
 func is_shy():
 	if current_variant == "shy":
+		return true
+	else:
+		return false
+# Method for breaking doors
+func is_angry():
+	if current_variant == 'angry':
 		return true
 	else:
 		return false
@@ -329,6 +348,8 @@ func mark_dead() -> void:
 	await get_tree().create_timer(1.0).timeout
 	deaths += 1
 	fluid_left -= 1
+	ui.update_fluid(fluid_left)
+	ui.update_deaths(deaths)
 	
 	if fluid_left > 0:
 		respawn()
@@ -403,6 +424,7 @@ func place_trap():
 	trap.trap_owner = self
 	get_parent().add_child(trap)
 	traps_remaining -= 1
+	ui.update_traps(traps_remaining, player_id)
 	can_place_trap = false
 	await get_tree().create_timer(trap_cooldown).timeout
 	can_place_trap = true
