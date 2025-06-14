@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://bkfgf4vgexmva"]
+[gd_scene load_steps=22 format=4 uid="uid://bkfgf4vgexmva"]
 
 [ext_resource type="Script" uid="uid://0h6uwl1ghtep" path="res://scripts/game_manager.gd" id="1_iywne"]
 [ext_resource type="Texture2D" uid="uid://bj1qh2bal1t32" path="res://assets/sprites/tilesetSpaceship.png" id="2_p57ef"]
@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://brfu4jmxlth7m" path="res://scenes/axe.tscn" id="17_1kice"]
 [ext_resource type="PackedScene" uid="uid://bndpgu0c7tlr6" path="res://scenes/player.tscn" id="17_rysoc"]
 [ext_resource type="PackedScene" uid="uid://coimyhssbkv7n" path="res://scenes/wrench.tscn" id="18_5newe"]
+[ext_resource type="PackedScene" uid="uid://c4jmo1q33mrg8" path="res://scenes/gun.tscn" id="18_ssvqc"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_u5sy4"]
 texture = ExtResource("2_p57ef")
@@ -189,3 +190,6 @@ position = Vector2(7866, -2026)
 position = Vector2(384, -459)
 
 [node name="Player1" parent="." instance=ExtResource("17_rysoc")]
+
+[node name="gun" parent="." instance=ExtResource("18_ssvqc")]
+position = Vector2(9787, 2975)
