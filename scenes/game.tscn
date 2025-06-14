@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://bkfgf4vgexmva"]
+[gd_scene load_steps=23 format=4 uid="uid://bkfgf4vgexmva"]
 
 [ext_resource type="Script" uid="uid://0h6uwl1ghtep" path="res://scripts/game_manager.gd" id="1_iywne"]
 [ext_resource type="Texture2D" uid="uid://bj1qh2bal1t32" path="res://assets/sprites/tilesetSpaceship.png" id="2_p57ef"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dyondbhyde86n" path="res://scenes/hidingSpot.tscn" id="8_dinhu"]
 [ext_resource type="PackedScene" uid="uid://bhvw5cvcxc3xb" path="res://scenes/enemy.tscn" id="8_gee14"]
 [ext_resource type="Texture2D" uid="uid://bpokv0lviygyq" path="res://assets/sprites/pixil-frame-0(1).png" id="9_0tnpc"]
+[ext_resource type="PackedScene" uid="uid://b8wubjvaoip37" path="res://scenes/printer.tscn" id="9_ssvqc"]
 [ext_resource type="AudioStream" uid="uid://iqg3tey1tqkx" path="res://assets/music/Main.wav" id="11_kvpfn"]
 [ext_resource type="PackedScene" uid="uid://bk5iakrpnrpyt" path="res://scenes/doors.tscn" id="13_kvuet"]
 [ext_resource type="PackedScene" uid="uid://cfm5nyb3t8ahb" path="res://scenes/crowbar.tscn" id="14_trtic"]
@@ -17,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://bndpgu0c7tlr6" path="res://scenes/player.tscn" id="17_rysoc"]
 [ext_resource type="PackedScene" uid="uid://coimyhssbkv7n" path="res://scenes/wrench.tscn" id="18_5newe"]
 [ext_resource type="PackedScene" uid="uid://c4jmo1q33mrg8" path="res://scenes/gun.tscn" id="18_ssvqc"]
+[ext_resource type="PackedScene" uid="uid://dj5132i183wvg" path="res://scenes/NPC.tscn" id="19_264po"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_u5sy4"]
 texture = ExtResource("2_p57ef")
@@ -140,6 +142,8 @@ position = Vector2(3952, -2011)
 scale = Vector2(10.9766, 10.9766)
 texture = ExtResource("9_0tnpc")
 
+[node name="Node2D" parent="PrinterV1" instance=ExtResource("9_ssvqc")]
+
 [node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("11_kvpfn")
 volume_db = -17.802
@@ -188,3 +192,18 @@ position = Vector2(384, -459)
 
 [node name="gun" parent="." instance=ExtResource("18_ssvqc")]
 position = Vector2(9787, 2975)
+
+[node name="NPC" parent="." instance=ExtResource("19_264po")]
+position = Vector2(238, -3792)
+
+[node name="NPC2" parent="." instance=ExtResource("19_264po")]
+position = Vector2(5565, -4057)
+
+[node name="NPC3" parent="." instance=ExtResource("19_264po")]
+position = Vector2(2947, -431)
+
+[node name="NPC4" parent="." instance=ExtResource("19_264po")]
+position = Vector2(3027, 2574)
+
+[node name="NPC5" parent="." instance=ExtResource("19_264po")]
+position = Vector2(-561, 1828)

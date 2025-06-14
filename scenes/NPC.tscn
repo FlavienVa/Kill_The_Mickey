@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=3 uid="uid://dj5132i183wvg"]
+
+[ext_resource type="Script" uid="uid://4v3f36spc7ql" path="res://scripts/NPC.gd" id="1_6xvi5"]
+[ext_resource type="SpriteFrames" uid="uid://b7c2yi6x2f3p0" path="res://npc/npc-sprite.tres" id="2_6xvi5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r5vbj"]
+size = Vector2(7, 15)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mhefn"]
+size = Vector2(3.33333, 16.6667)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6xvi5"]
+radius = 63.0714
+
+[node name="NPC" type="CharacterBody2D"]
+script = ExtResource("1_6xvi5")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(6, 6)
+sprite_frames = ExtResource("2_6xvi5")
+animation = &"run"
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+visibility_layer = 3
+position = Vector2(-0.5, 2.5)
+scale = Vector2(6, 6)
+shape = SubResource("RectangleShape2D_r5vbj")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(5.96046e-08, 1.19209e-07)
+scale = Vector2(0.6, 0.6)
+shape = SubResource("RectangleShape2D_mhefn")
+
+[node name="SuspicionRadius" type="Area2D" parent="."]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SuspicionRadius"]
+scale = Vector2(10, 10)
+shape = SubResource("CircleShape2D_6xvi5")
+
+[connection signal="body_entered" from="SuspicionRadius" to="." method="_on_suspicion_radius_body_entered"]
+[connection signal="body_exited" from="SuspicionRadius" to="." method="_on_suspicion_radius_body_exited"]
