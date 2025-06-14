@@ -11,7 +11,7 @@ extends StaticBody2D
 
 var is_open = true
 var is_destroyed = false
-var health = 5
+var health = 10
 
 
 func _ready():
@@ -54,8 +54,11 @@ func take_damage() -> void:
 	modulate = Color.RED
 	await get_tree().create_timer(0.1).timeout
 	modulate = Color.WHITE
-	
-	health -= 1
+	player = interaction_area.current_player
+	if player.has_method("is_angry") and player.is_angry():
+		health -= 10
+	else:
+		health -= 1
 	print(health)
 	if health <= 0:
 		is_destroyed = true
