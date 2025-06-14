@@ -197,6 +197,12 @@ func _physics_process(delta: float) -> void:
 		perform_attack()
 
 func pickup_weapon(weapon: Node2D) -> void:
+	if has_knife and weapon_original_parent:
+		$WeaponSocket.remove_child(current_weapon)
+		weapon_original_parent.add_child(current_weapon)
+		current_weapon.to_original()
+		current_weapon.position = weapon_original_position
+
 	has_knife = true
 	current_weapon = weapon
 	current_weapon_name = weapon.name
