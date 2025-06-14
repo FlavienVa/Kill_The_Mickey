@@ -16,9 +16,16 @@ var health = 5
 
 func _ready():
 	add_to_group("doors")
-	_sprite.frame = 1 
-	_collision.disabled = true
+	randomize()
+	if randi_range(0, 1) == 1:
+		_sprite.frame = 1 
+		_collision.disabled = true
+	else:
+		_sprite.frame = 0
+		_collision.disabled = false
+		is_open = false
 	interaction_area.interact = Callable(self, "_open")
+
 
 func _open():
 	var player = interaction_area.current_player

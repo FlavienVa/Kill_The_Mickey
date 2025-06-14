@@ -15,6 +15,7 @@ var attack_direction := Vector2.RIGHT
 var is_attacking := false
 
 var current_weapon: Node2D = null
+var current_weapon_name := ""
 var weapon_original_parent: Node = null
 var weapon_original_position: Vector2 = Vector2.ZERO
 
@@ -179,6 +180,7 @@ func _physics_process(delta: float) -> void:
 func pickup_weapon(weapon: Node2D) -> void:
 	has_knife = true
 	current_weapon = weapon
+	current_weapon_name = weapon.name
 	weapon_original_parent = weapon.get_parent()
 	weapon_original_position = weapon.position
 
@@ -221,7 +223,10 @@ func perform_attack():
 	var attack_hitbox = Area2D.new()
 	var collision_shape = CollisionShape2D.new()
 	var shape = RectangleShape2D.new()
-	shape.size = Vector2(ATTACK_RANGE, 50)
+	if current_weapon_name == "gun":
+		shape.size = Vector2(1000, 50)
+	else:
+		shape.size = Vector2(ATTACK_RANGE, 50)
 	collision_shape.shape = shape
 	attack_hitbox.add_child(collision_shape)
 	
