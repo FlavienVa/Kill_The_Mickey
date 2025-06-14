@@ -1,10 +1,21 @@
-[gd_scene load_steps=2 format=3 uid="uid://r6d6fjkoicai"]
+[gd_scene load_steps=3 format=3 uid="uid://r6d6fjkoicai"]
 
 [ext_resource type="Script" uid="uid://pybquynk1fgn" path="res://scripts/interaction_area.gd" id="1_40t11"]
+[ext_resource type="FontFile" uid="uid://vgl0sm2xl6rm" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="2_8sep7"]
 
 [node name="Interaction Area" type="Area2D"]
 collision_mask = 2
 script = ExtResource("1_40t11")
+
+[node name="Label" type="Label" parent="."]
+z_index = 20
+offset_left = -163.0
+offset_top = -11.0
+offset_right = 155.0
+offset_bottom = 17.0
+theme_override_fonts/font = ExtResource("2_8sep7")
+theme_override_font_sizes/font_size = 24
+text = "[E] to interact"
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

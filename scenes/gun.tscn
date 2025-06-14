@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://c4jmo1q33mrg8"]
 
 [ext_resource type="Script" uid="uid://chouhdbjhhty6" path="res://scripts/knife.gd" id="1_gp1hk"]
-[ext_resource type="Texture2D" uid="uid://dyenfgqj5klio" path="res://assets/sprites/gun.png" id="2_gp1hk"]
+[ext_resource type="Texture2D" uid="uid://c4k7o8tb1ocw" path="res://assets/sprites/gun.png" id="2_gp1hk"]
 [ext_resource type="PackedScene" uid="uid://r6d6fjkoicai" path="res://scenes/interaction_area.tscn" id="3_6b133"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_rhlpq"]

@@ -33,6 +33,7 @@ func _process(delta):
 	var closest_player = null
 	var closest_area = null
 	var shortest_distance = INF
+	label.hide()
 	
 	# Find the closest player-area combination
 	for player in player_active_areas.keys():
@@ -49,18 +50,18 @@ func _process(delta):
 				closest_player = player
 				closest_area = areas[0]
 	
-	# Display label for the closest interaction
-	if closest_area and closest_player:
-		#print("label show")
-		label.text = base_text + closest_area.action_name
-		label.global_position = closest_area.global_position
-		#print(label.global_position)
-		label.global_position.y -= 100
-		label.global_position.x -= label.size.x / 2
-		label.show()
-	else:
-		#print("label hide")
-		label.hide()
+	## Display label for the closest interaction
+	#if closest_area and closest_player:
+		##print("label show")
+		#label.text = base_text + closest_area.action_name
+		#label.global_position = closest_area.global_position
+		##print(label.global_position)
+		#label.global_position.y -= 100
+		#label.global_position.x -= label.size.x / 2
+		#label.show()
+	#else:
+		##print("label hide")
+		#label.hide()
 
 func _sort_by_distance_to_player(area1, area2, player):
 	var area1_to_player = player.global_position.distance_to(area1.global_position)

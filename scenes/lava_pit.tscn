@@ -16,5 +16,5 @@ texture = ExtResource("1_h8fra")
 [node name="Killzone" parent="." instance=ExtResource("3_nc2nb")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone"]
-position = Vector2(-4, 0.5)
+position = Vector2(-4, -1)
 shape = SubResource("RectangleShape2D_uoo7y")
