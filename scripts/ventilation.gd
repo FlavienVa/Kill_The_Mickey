@@ -5,7 +5,7 @@ extends StaticBody2D
 
 @export var target_ventilation_path: NodePath
 @export_enum("Up", "Down", "Left", "Right") var spawn_direction: int = 0
-@export var spawn_offset: float = 200.0  # Distance from ventilation center
+@export var spawn_offset: float = 1000.0  # Distance from ventilation center
 
 var target_ventilation: Node2D
 
@@ -33,8 +33,9 @@ func get_spawn_position() -> Vector2:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _enter_ventilation():
-	if target_ventilation and InteractionManager.player:
+	var player = interaction_area.current_player
+	if target_ventilation and player:
 		# Teleport the player to the target ventilation with offset
-		InteractionManager.player.position = get_spawn_position()
+		player.position = get_spawn_position()
 		# Optional: Add a small delay or animation here
 		await get_tree().create_timer(0.4).timeout

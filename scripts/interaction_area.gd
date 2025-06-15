@@ -16,11 +16,11 @@ func _on_body_entered(body):
 
 		if PlayerManager.get_player_by_name("Player1") == body : 
 			label.text = base_text_player1 + action_name
-			if action_name == "hide" and body.is_shy() or action_name == "operate" and body.is_smart() or action_name == "pick":
+			if (action_name == "hide" or action_name == "enter") and body.is_shy() or action_name == "operate" and body.is_smart() or action_name == "pick" :
 				label.show()
 		elif PlayerManager.get_player_by_name("Player2") == body : 
 			label.text = base_text_player2 + action_name
-			if action_name == "hide" and body.is_shy() or action_name == "operate" and body.is_smart() or action_name == "pick":
+			if (action_name == "hide" or action_name == "enter") and body.is_shy() or action_name == "operate" and body.is_smart() or action_name == "pick":
 				label.show()
 		InteractionManager.register_area(self, body)
 		current_player = body

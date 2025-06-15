@@ -228,6 +228,7 @@ func drop_current_weapon_at(parent: Node, position: Vector2):
 		$WeaponSocket.remove_child(current_weapon)
 		parent.add_child(current_weapon)
 		current_weapon.global_position = position
+		current_weapon.to_original()
 		current_weapon = null
 
 	

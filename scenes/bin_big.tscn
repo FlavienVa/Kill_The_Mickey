@@ -1,0 +1,36 @@
+[gd_scene load_steps=7 format=3 uid="uid://dxs7ben3wdjod"]
+
+[ext_resource type="Texture2D" uid="uid://dep5xhywda4io" path="res://assets/sprites/recycling 1.png" id="1_hqllc"]
+[ext_resource type="Texture2D" uid="uid://bklcaeyfimhnh" path="res://assets/sprites/garbage bag 1.png" id="2_3r6xf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x62jw"]
+atlas = ExtResource("1_hqllc")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w7x3c"]
+atlas = ExtResource("2_3r6xf")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3d5x7"]
+size = Vector2(10, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2s0wx"]
+size = Vector2(8, 6)
+
+[node name="Bin_big" type="StaticBody2D"]
+texture_filter = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-8, 0)
+texture = SubResource("AtlasTexture_x62jw")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(1, 4)
+scale = Vector2(0.375, 0.327381)
+texture = SubResource("AtlasTexture_w7x3c")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-8, 0)
+shape = SubResource("RectangleShape2D_3d5x7")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_2s0wx")

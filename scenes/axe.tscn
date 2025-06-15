@@ -40,7 +40,7 @@ one_way_collision_margin = 0.0
 
 [node name="Interaction Area" parent="." instance=ExtResource("3_uel4w")]
 position = Vector2(-5, -2)
-action_name = "pick up"
+action_name = "pick"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interaction Area"]
 position = Vector2(6, 0)

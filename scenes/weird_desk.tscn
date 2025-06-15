@@ -1,0 +1,66 @@
+[gd_scene load_steps=11 format=3 uid="uid://cjaedwytvvoyo"]
+
+[ext_resource type="Texture2D" uid="uid://7b07j4jshflr" path="res://assets/sprites/TileSet v1.0.png" id="1_u5m8k"]
+[ext_resource type="Texture2D" uid="uid://dolaf6vaqnlv3" path="res://assets/sprites/Computer Monitor Asset Pack Rev 1.png" id="2_qxqmw"]
+[ext_resource type="Texture2D" uid="uid://b4ggwak2pv4wo" path="res://assets/sprites/SciFi_DungeonTileset16x16_0x72Like.png" id="3_ap8qx"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m4y2d"]
+atlas = ExtResource("1_u5m8k")
+region = Rect2(128, 99, 32, 23)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3jnew"]
+atlas = ExtResource("1_u5m8k")
+region = Rect2(224, 96, 32, 31)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jgq26"]
+atlas = ExtResource("2_qxqmw")
+region = Rect2(96, 107, 16, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7qiu1"]
+atlas = ExtResource("3_ap8qx")
+region = Rect2(196, 13, 8, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1equf"]
+atlas = ExtResource("3_ap8qx")
+region = Rect2(228, 147, 7, 11)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nibk5"]
+size = Vector2(32, 22)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5g8el"]
+size = Vector2(63, 50)
+
+[node name="WeirdDesk" type="StaticBody2D"]
+texture_filter = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-19, 0)
+texture = SubResource("AtlasTexture_m4y2d")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(14, -4)
+texture = SubResource("AtlasTexture_3jnew")
+
+[node name="Sprite2D3" type="Sprite2D" parent="."]
+position = Vector2(46, -4)
+texture = SubResource("AtlasTexture_3jnew")
+
+[node name="Sprite2D4" type="Sprite2D" parent="."]
+position = Vector2(9, -29)
+texture = SubResource("AtlasTexture_jgq26")
+
+[node name="Sprite2D5" type="Sprite2D" parent="."]
+position = Vector2(30, -28)
+texture = SubResource("AtlasTexture_7qiu1")
+
+[node name="Sprite2D6" type="Sprite2D" parent="."]
+position = Vector2(52, -25)
+texture = SubResource("AtlasTexture_1equf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-18, -1)
+shape = SubResource("RectangleShape2D_nibk5")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(30.5, -14)
+shape = SubResource("RectangleShape2D_5g8el")
