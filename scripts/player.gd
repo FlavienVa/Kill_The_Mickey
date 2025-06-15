@@ -38,6 +38,9 @@ var knockback_timer := 0.0
 
 var is_immobilized := false
 
+@export var printer_path: NodePath
+@onready var _printer := get_node(printer_path)
+
 
 @onready var _animated_sprite := $AnimatedSprite2D
 
@@ -351,7 +354,7 @@ func mark_dead() -> void:
 	ui.update_fluid(fluid_left)
 	ui.update_deaths(deaths)
 	
-	if fluid_left > 0:
+	if fluid_left > 0 and not _printer.is_dead:
 		respawn()
 	else:
 		_game_over()
@@ -390,14 +393,29 @@ func _game_over() -> void:
 	# Check if both players are dead before restarting
 	var all_players = get_tree().get_nodes_in_group("player")
 	var living_players = 0
+
 	for player in all_players:
-		if player.fluid_left > 0:
+		if player.fluid_left > 0 and player != self:
 			living_players += 1
-	
+			
+			# Show "You Winx" to the surviving player
+			var win_label = player.get_node_or_null("YouWinLabel")
+			if win_label:
+				win_label.text = "The other player has died!\nYou won!"
+				win_label.visible = true
+
+	# Show "You Lost" on the dying player
+	var lose_label = get_node_or_null("YouWinLabel")  # assuming you're in the dying player
+	if lose_label:
+		lose_label.text = "You died!\nYou lost!"
+		lose_label.visible = true
+
+	# Restart the game if nobody's alive
 	if living_players == 0:
-		# All players are dead, restart the game
 		await get_tree().create_timer(3.0).timeout
 		get_tree().reload_current_scene()
+
+
 
 func _on_foot_step_timer_timeout() -> void:
 	if velocity.length() > 0:
