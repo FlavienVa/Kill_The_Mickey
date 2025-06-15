@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://blt02p567i42n"]
+
+[ext_resource type="Script" uid="uid://do0jt2l4sykxi" path="res://scripts/hiding_spot.gd" id="1_x1qsq"]
+[ext_resource type="Texture2D" uid="uid://crrvidu5x7mhp" path="res://assets/sprites/home_pack.png" id="2_ese0s"]
+[ext_resource type="PackedScene" uid="uid://r6d6fjkoicai" path="res://scenes/interaction_area.tscn" id="4_l4yk2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x1qsq"]
+atlas = ExtResource("2_ese0s")
+region = Rect2(225.14, 83.8253, 14.5812, 27.4213)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x1qsq"]
+size = Vector2(143, 283)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ese0s"]
+radius = 275.089
+
+[node name="HidingSpot2" type="StaticBody2D"]
+texture_filter = 1
+script = ExtResource("1_x1qsq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(10, 10)
+texture = SubResource("AtlasTexture_x1qsq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2.5, -5.5)
+shape = SubResource("RectangleShape2D_x1qsq")
+
+[node name="HideTimer" type="Timer" parent="."]
+
+[node name="Interaction Area" parent="." instance=ExtResource("4_l4yk2")]
+position = Vector2(1, 4)
+action_name = "hide"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interaction Area"]
+position = Vector2(-3, -5)
+shape = SubResource("CircleShape2D_ese0s")
