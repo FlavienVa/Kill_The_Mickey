@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://dj5132i183wvg"]
 
-[ext_resource type="Script" uid="uid://4v3f36spc7ql" path="res://scripts/NPC.gd" id="1_6xvi5"]
+[ext_resource type="Script" path="res://scripts/NPC.gd" id="1_6xvi5"]
 [ext_resource type="SpriteFrames" uid="uid://b7c2yi6x2f3p0" path="res://npc/npc-sprite.tres" id="2_6xvi5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r5vbj"]
@@ -13,6 +13,7 @@ size = Vector2(3.33333, 16.6667)
 radius = 63.0714
 
 [node name="NPC" type="CharacterBody2D"]
+texture_filter = 1
 script = ExtResource("1_6xvi5")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

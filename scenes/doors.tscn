@@ -32,6 +32,7 @@ volume_db = -8.637
 pitch_scale = 0.79
 
 [node name="Interaction Area" parent="." instance=ExtResource("3_af2mo")]
+texture_filter = 1
 action_name = "operate"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interaction Area"]
