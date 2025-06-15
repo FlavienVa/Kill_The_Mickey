@@ -1,0 +1,119 @@
+[gd_scene load_steps=7 format=3 uid="uid://d3ebsk5i0fqfp"]
+
+[ext_resource type="Texture2D" uid="uid://crrvidu5x7mhp" path="res://assets/sprites/home_pack.png" id="1_iqcql"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t7j1c"]
+atlas = ExtResource("1_iqcql")
+region = Rect2(68.2515, 15.9399, 7.10679, 14.9981)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3c1dy"]
+atlas = ExtResource("1_iqcql")
+region = Rect2(144.391, 17.3779, 47.1944, 14.4928)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6uh54"]
+atlas = ExtResource("1_iqcql")
+region = Rect2(81.4456, 105.633, 11.6091, 5.23226)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_maws7"]
+atlas = ExtResource("1_iqcql")
+region = Rect2(84.3608, 16.1594, 7.29977, 13.8444)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n4vg8"]
+size = Vector2(47, 25)
+
+[node name="EatingTable" type="StaticBody2D"]
+texture_filter = 1
+
+[node name="Sprite2D12" type="Sprite2D" parent="."]
+position = Vector2(-19, -9)
+texture = SubResource("AtlasTexture_t7j1c")
+
+[node name="Sprite2D13" type="Sprite2D" parent="."]
+position = Vector2(-10, -9)
+texture = SubResource("AtlasTexture_t7j1c")
+
+[node name="Sprite2D14" type="Sprite2D" parent="."]
+position = Vector2(-2, -9)
+texture = SubResource("AtlasTexture_t7j1c")
+
+[node name="Sprite2D15" type="Sprite2D" parent="."]
+position = Vector2(6, -9)
+texture = SubResource("AtlasTexture_t7j1c")
+
+[node name="Sprite2D16" type="Sprite2D" parent="."]
+position = Vector2(15, -9)
+texture = SubResource("AtlasTexture_t7j1c")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-2, 0)
+texture = SubResource("AtlasTexture_3c1dy")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(-19, -2)
+scale = Vector2(0.431818, 0.55)
+texture = SubResource("AtlasTexture_6uh54")
+
+[node name="Sprite2D11" type="Sprite2D" parent="."]
+position = Vector2(-19, -5)
+scale = Vector2(0.431818, 0.55)
+texture = SubResource("AtlasTexture_6uh54")
+
+[node name="Sprite2D3" type="Sprite2D" parent="."]
+position = Vector2(-10, -2)
+scale = Vector2(0.431818, 0.55)
+texture = SubResource("AtlasTexture_6uh54")
+
+[node name="Sprite2D10" type="Sprite2D" parent="."]
+position = Vector2(-10, -5)
+scale = Vector2(0.431818, 0.55)
+texture = SubResource("AtlasTexture_6uh54")
+
+[node name="Sprite2D4" type="Sprite2D" parent="."]
+position = Vector2(-2, -2)
+scale = Vector2(0.431818, 0.55)
+texture = SubResource("AtlasTexture_6uh54")
+
+[node name="Sprite2D9" type="Sprite2D" parent="."]
+position = Vector2(-2, -5)
+scale = Vector2(0.431818, 0.55)
+texture = SubResource("AtlasTexture_6uh54")
+
+[node name="Sprite2D5" type="Sprite2D" parent="."]
+position = Vector2(6, -2)
+scale = Vector2(0.431818, 0.55)
+texture = SubResource("AtlasTexture_6uh54")
+
+[node name="Sprite2D7" type="Sprite2D" parent="."]
+position = Vector2(15, -2)
+scale = Vector2(0.431818, 0.55)
+texture = SubResource("AtlasTexture_6uh54")
+
+[node name="Sprite2D8" type="Sprite2D" parent="."]
+position = Vector2(15, -5)
+scale = Vector2(0.431818, 0.55)
+texture = SubResource("AtlasTexture_6uh54")
+
+[node name="Sprite2D6" type="Sprite2D" parent="."]
+position = Vector2(6, -5)
+scale = Vector2(0.431818, 0.55)
+texture = SubResource("AtlasTexture_6uh54")
+
+[node name="Sprite2D17" type="Sprite2D" parent="."]
+position = Vector2(-19, 4)
+texture = SubResource("AtlasTexture_maws7")
+
+[node name="Sprite2D18" type="Sprite2D" parent="."]
+position = Vector2(-2, 4)
+texture = SubResource("AtlasTexture_maws7")
+
+[node name="Sprite2D19" type="Sprite2D" parent="."]
+position = Vector2(7, 4)
+texture = SubResource("AtlasTexture_maws7")
+
+[node name="Sprite2D20" type="Sprite2D" parent="."]
+position = Vector2(16, 4)
+texture = SubResource("AtlasTexture_maws7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1.5, -2.5)
+shape = SubResource("RectangleShape2D_n4vg8")

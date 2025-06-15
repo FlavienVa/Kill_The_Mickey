@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://bl4jy6sedy8qm"]
+
+[ext_resource type="Texture2D" uid="uid://crrvidu5x7mhp" path="res://assets/sprites/home_pack.png" id="1_6vnpx"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v2k6t"]
+atlas = ExtResource("1_6vnpx")
+region = Rect2(272, 91, 16, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y54j3"]
+size = Vector2(16, 20)
+
+[node name="sink" type="StaticBody2D"]
+texture_filter = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_v2k6t")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_y54j3")
