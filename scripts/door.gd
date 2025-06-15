@@ -51,10 +51,12 @@ func take_damage() -> void:
 	if is_destroyed:
 		return
 	# Visual feedback
+	player = interaction_area.current_player
+	if !player:
+		return
 	modulate = Color.RED
 	await get_tree().create_timer(0.1).timeout
 	modulate = Color.WHITE
-	player = interaction_area.current_player
 	if player.has_method("is_angry") and player.is_angry():
 		health -= 10
 	else:
