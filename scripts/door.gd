@@ -11,7 +11,7 @@ extends StaticBody2D
 
 var is_open = true
 var is_destroyed = false
-var health = 10
+var health = 5
 
 
 func _ready():
