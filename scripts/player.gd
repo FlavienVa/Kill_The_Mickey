@@ -100,6 +100,8 @@ func _process(delta: float) -> void:
 			ui.show_variant_label("HappyLabel", player_id)
 		else:
 			ui.remove_label("HappyLabel")
+		if _printer.is_dead:
+			ui.show_printer_label()
 		
 	
 
@@ -312,7 +314,9 @@ func _on_attack_hit(body: Node2D) -> void:
 func take_damage(amount: int, source_position: Vector2) -> void:
 	if is_dead:
 		return
-
+	modulate = Color.RED
+	await get_tree().create_timer(0.1).timeout
+	modulate = Color.WHITE
 	# Reduce health first
 	health -= amount
 	health = clamp(health, 0, max_health)

@@ -39,3 +39,16 @@ func update_traps(traps_left: int, player_id: int):
 			$VariantLabel.text = "Press R to place traps. Traps left: %d" % traps_left 
 		else:
 			$VariantLabel.text = "Press Ctrl to place traps. Traps left: %d" % traps_left 
+
+func show_printer_label():
+	var label = Label.new()
+	label.name = "PrintLabel"
+	label.text = "The printer has been destroyed! 
+			You are down to your last life." 
+	label.anchor_right = 1.0
+	label.anchor_bottom = 0.1
+	label.offset_left = 20
+	label.offset_top = 175
+	label.add_theme_font_override("font",load("res://assets/fonts/PixelOperator8.ttf"))
+	label.add_theme_color_override("color", Color("RED"))
+	add_child(label)
