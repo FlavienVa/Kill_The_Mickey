@@ -363,7 +363,7 @@ func mark_dead() -> void:
 	ui.update_fluid(fluid_left)
 	ui.update_deaths(deaths)
 	
-	if fluid_left > 0 and not _printer.is_destroyed:
+	if fluid_left > 0 and not _printer.is_dead:
 		respawn()
 	else:
 		_game_over()
@@ -459,4 +459,5 @@ func immobilize(duration):
 	
 
 
+# Replace with function body.
 # Replace with function body.

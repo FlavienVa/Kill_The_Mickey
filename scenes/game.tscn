@@ -1,24 +1,18 @@
-
-[gd_scene load_steps=31 format=4 uid="uid://bkfgf4vgexmva"]
+[gd_scene load_steps=30 format=4 uid="uid://bkfgf4vgexmva"]
 
 [ext_resource type="Script" uid="uid://0h6uwl1ghtep" path="res://scripts/game_manager.gd" id="1_iywne"]
 [ext_resource type="Texture2D" uid="uid://bj1qh2bal1t32" path="res://assets/sprites/tilesetSpaceship.png" id="2_p57ef"]
 [ext_resource type="PackedScene" uid="uid://rv0632prr6s5" path="res://scenes/knife.tscn" id="3_lnu2h"]
-[ext_resource type="Texture2D" uid="uid://dw27k34vg6ybg" path="res://assets/sprites/pixil-layer-Background(5).png" id="4_bt5mj"]
 [ext_resource type="Texture2D" uid="uid://d0n1gp7rgtmll" path="res://assets/sprites/lavapit.png" id="4_p57ef"]
 [ext_resource type="PackedScene" uid="uid://cxdjk1twghdv4" path="res://scenes/computerset.tscn" id="4_ssvqc"]
-[ext_resource type="Texture2D" uid="uid://t3qseer3rfaf" path="res://assets/sprites/pixil-layer-Background final.png" id="5_e1j6l"]
 [ext_resource type="PackedScene" uid="uid://cwdqx0pmwic5u" path="res://scenes/lava_pit.tscn" id="5_u5sy4"]
 [ext_resource type="PackedScene" uid="uid://bwqea16e3p2l3" path="res://scenes/kitchen.tscn" id="6_264po"]
 [ext_resource type="PackedScene" uid="uid://dyondbhyde86n" path="res://scenes/hidingSpot.tscn" id="8_dinhu"]
 [ext_resource type="Texture2D" uid="uid://bpokv0lviygyq" path="res://assets/sprites/pixil-frame-0(1).png" id="9_0tnpc"]
-
-[ext_resource type="PackedScene" uid="uid://b8wubjvaoip37" path="res://scenes/printer.tscn" id="9_ssvqc"]
-
 [ext_resource type="PackedScene" uid="uid://blt02p567i42n" path="res://scenes/hiding_spot_2.tscn" id="10_5newe"]
 [ext_resource type="PackedScene" uid="uid://dws6nlgcpc0qu" path="res://scenes/shower.tscn" id="10_37s47"]
 [ext_resource type="AudioStream" uid="uid://iqg3tey1tqkx" path="res://assets/music/Main.wav" id="11_kvpfn"]
-[ext_resource type="Script" uid="uid://brkt1f3pstxbk" path="res://scripts/printer.gd" id="12_kvuet"]
+[ext_resource type="Script" path="res://scripts/printer.gd" id="12_kvuet"]
 [ext_resource type="PackedScene" uid="uid://bl4jy6sedy8qm" path="res://scenes/sink.tscn" id="12_pl11u"]
 [ext_resource type="PackedScene" uid="uid://d3ebsk5i0fqfp" path="res://scenes/eating_table.tscn" id="13_5newe"]
 [ext_resource type="PackedScene" uid="uid://bk5iakrpnrpyt" path="res://scenes/doors.tscn" id="13_kvuet"]
@@ -59,26 +53,14 @@ texture = ExtResource("4_p57ef")
 texture_region_size = Vector2i(256, 256)
 0:0/0 = 0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e1j6l"]
-texture = ExtResource("4_bt5mj")
-texture_region_size = Vector2i(256, 256)
-0:0/0 = 0
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pl11u"]
-texture = ExtResource("5_e1j6l")
-texture_region_size = Vector2i(256, 256)
-0:0/0 = 0
-
 [sub_resource type="TileSet" id="TileSet_gee14"]
 tile_size = Vector2i(256, 256)
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_u5sy4")
 sources/1 = SubResource("TileSetAtlasSource_gee14")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_rysoc"]
-size = Vector2(20.5893, 48.3756)
-sources/7 = SubResource("TileSetAtlasSource_e1j6l")
-sources/9 = SubResource("TileSetAtlasSource_pl11u")
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pl11u"]
+size = Vector2(22.711, 36.8722)
 
 [node name="Game" type="Node2D"]
 
@@ -165,6 +147,8 @@ scale = Vector2(10, 10)
 [node name="knife" parent="Kitchen" instance=ExtResource("3_lnu2h")]
 z_index = 1
 position = Vector2(9476, -4260)
+collision_layer = 2
+collision_mask = 1
 
 [node name="KitchenCounter" parent="Kitchen" instance=ExtResource("20_1kice")]
 position = Vector2(9713, -4214)
@@ -224,11 +208,14 @@ scale = Vector2(10.9766, 10.9766)
 script = ExtResource("12_kvuet")
 
 [node name="Sprite2D" type="Sprite2D" parent="PrinterV1"]
-position = Vector2(2.45978, 1.18433)
-scale = Vector2(0.71637, 0.707829)
+position = Vector2(4.40144, 3.17156)
+scale = Vector2(0.655693, 0.645728)
 texture = ExtResource("9_0tnpc")
 
-[node name="Node2D" parent="PrinterV1" instance=ExtResource("9_ssvqc")]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PrinterV1"]
+position = Vector2(5.52487, 2.49307)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_pl11u")
 
 [node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("11_kvpfn")
@@ -309,4 +296,3 @@ position = Vector2(3027, 2574)
 
 [node name="NPC5" parent="." instance=ExtResource("19_264po")]
 position = Vector2(-561, 1828)
-

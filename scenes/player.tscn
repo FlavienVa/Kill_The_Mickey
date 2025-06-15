@@ -19,8 +19,7 @@ thickness = 15
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 z_index = 5
 position = Vector2(164, -302)
-collision_layer = 3
-collision_mask = 3
+collision_layer = 2
 script = ExtResource("1_g2els")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." groups=["playerSprite"]]
