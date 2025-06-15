@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://bd57fob6ks1hp"]
+
+[ext_resource type="Texture2D" uid="uid://crrvidu5x7mhp" path="res://assets/sprites/home_pack.png" id="1_akt7f"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fqty4"]
+atlas = ExtResource("1_akt7f")
+region = Rect2(224, 1, 16, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_raxto"]
+atlas = ExtResource("1_akt7f")
+region = Rect2(272, 16, 16, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_853xm"]
+atlas = ExtResource("1_akt7f")
+region = Rect2(19, 129, 10, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x7btf"]
+size = Vector2(154, 284)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_exsg2"]
+size = Vector2(159, 222)
+
+[node name="Bed" type="StaticBody2D"]
+texture_filter = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(10, 10)
+texture = SubResource("AtlasTexture_fqty4")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(-160, -1.90735e-06)
+scale = Vector2(10, 10)
+texture = SubResource("AtlasTexture_raxto")
+
+[node name="Sprite2D3" type="Sprite2D" parent="."]
+position = Vector2(-158, -84)
+scale = Vector2(10, 10)
+texture = SubResource("AtlasTexture_853xm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, -1)
+shape = SubResource("RectangleShape2D_x7btf")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(-157.5, -37)
+shape = SubResource("RectangleShape2D_exsg2")
