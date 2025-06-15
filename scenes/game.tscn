@@ -1,5 +1,4 @@
-
-[gd_scene load_steps=31 format=4 uid="uid://bkfgf4vgexmva"]
+[gd_scene load_steps=34 format=4 uid="uid://bkfgf4vgexmva"]
 
 [ext_resource type="Script" uid="uid://0h6uwl1ghtep" path="res://scripts/game_manager.gd" id="1_iywne"]
 [ext_resource type="Texture2D" uid="uid://bj1qh2bal1t32" path="res://assets/sprites/tilesetSpaceship.png" id="2_p57ef"]
@@ -12,12 +11,10 @@
 [ext_resource type="PackedScene" uid="uid://bwqea16e3p2l3" path="res://scenes/kitchen.tscn" id="6_264po"]
 [ext_resource type="PackedScene" uid="uid://dyondbhyde86n" path="res://scenes/hidingSpot.tscn" id="8_dinhu"]
 [ext_resource type="Texture2D" uid="uid://bpokv0lviygyq" path="res://assets/sprites/pixil-frame-0(1).png" id="9_0tnpc"]
-
-[ext_resource type="PackedScene" uid="uid://b8wubjvaoip37" path="res://scenes/printer.tscn" id="9_ssvqc"]
-
 [ext_resource type="PackedScene" uid="uid://blt02p567i42n" path="res://scenes/hiding_spot_2.tscn" id="10_5newe"]
 [ext_resource type="PackedScene" uid="uid://dws6nlgcpc0qu" path="res://scenes/shower.tscn" id="10_37s47"]
 [ext_resource type="AudioStream" uid="uid://iqg3tey1tqkx" path="res://assets/music/Main.wav" id="11_kvpfn"]
+[ext_resource type="Script" uid="uid://bpf8hf6xijuhy" path="res://scripts/printer.gd" id="12_kvuet"]
 [ext_resource type="PackedScene" uid="uid://bl4jy6sedy8qm" path="res://scenes/sink.tscn" id="12_pl11u"]
 [ext_resource type="PackedScene" uid="uid://d3ebsk5i0fqfp" path="res://scenes/eating_table.tscn" id="13_5newe"]
 [ext_resource type="PackedScene" uid="uid://bk5iakrpnrpyt" path="res://scenes/doors.tscn" id="13_kvuet"]
@@ -75,6 +72,9 @@ sources/0 = SubResource("TileSetAtlasSource_u5sy4")
 sources/1 = SubResource("TileSetAtlasSource_gee14")
 sources/7 = SubResource("TileSetAtlasSource_e1j6l")
 sources/9 = SubResource("TileSetAtlasSource_pl11u")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qnb83"]
+size = Vector2(17.4139, 25.5088)
 
 [node name="Game" type="Node2D"]
 
@@ -214,12 +214,20 @@ position = Vector2(5572, -742)
 [node name="HidingSpot2" parent="." instance=ExtResource("8_dinhu")]
 position = Vector2(4279, 1306)
 
-[node name="PrinterV1" type="Sprite2D" parent="."]
+[node name="PrinterV1" type="StaticBody2D" parent="."]
 position = Vector2(3952, -2011)
 scale = Vector2(10.9766, 10.9766)
+script = ExtResource("12_kvuet")
+
+[node name="Sprite2D" type="Sprite2D" parent="PrinterV1"]
+position = Vector2(1.70247, -6.28609)
+scale = Vector2(0.501956, 0.470107)
 texture = ExtResource("9_0tnpc")
 
-[node name="Node2D" parent="PrinterV1" instance=ExtResource("9_ssvqc")]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PrinterV1"]
+position = Vector2(2.45978, -7.83484)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_qnb83")
 
 [node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("11_kvpfn")
@@ -274,9 +282,10 @@ position = Vector2(9787, 2975)
 
 [node name="Player2" parent="." instance=ExtResource("17_rysoc")]
 position = Vector2(384, -459)
+printer_path = NodePath("../PrinterV1")
 
 [node name="Player1" parent="." instance=ExtResource("17_rysoc")]
-
+printer_path = NodePath("../PrinterV1")
 
 [node name="gun" parent="." instance=ExtResource("18_ssvqc")]
 position = Vector2(9787, 2975)
@@ -295,4 +304,3 @@ position = Vector2(3027, 2574)
 
 [node name="NPC5" parent="." instance=ExtResource("19_264po")]
 position = Vector2(-561, 1828)
-
