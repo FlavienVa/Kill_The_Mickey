@@ -29,8 +29,9 @@ func take_damage(amount: int) -> void:
 func update_health_label():
 	if health_label:
 		health_label.text = str(health) + "/" + str(max_health)
-		
+
 func die():
 	is_dead = true
 	print("Printer destroyed!")
-	$Sprite2D.texture = preload("res://assets/sprites/broken-printer.png")
+	$CollisionShape2D.set_deferred("disabled", true)
+	queue_free()

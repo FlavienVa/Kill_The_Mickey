@@ -1,4 +1,27 @@
-[gd_scene format=3 uid="uid://b8wubjvaoip37"]
+[gd_scene load_steps=6 format=3 uid="uid://b8wubjvaoip37"]
+
+[ext_resource type="Texture2D" uid="uid://bpokv0lviygyq" path="res://assets/sprites/pixil-frame-0(1).png" id="1_4lrxx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mu7cj"]
+size = Vector2(36, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kdvce"]
+atlas = ExtResource("1_4lrxx")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jf8il"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kdvce")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4lrxx"]
+size = Vector2(36, 50)
 
 [node name="Node2D" type="StaticBody2D"]
 texture_filter = 1

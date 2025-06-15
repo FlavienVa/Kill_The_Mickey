@@ -38,9 +38,6 @@ var knockback_timer := 0.0
 
 var is_immobilized := false
 
-@export var printer_path: NodePath
-@onready var _printer := get_node(printer_path)
-
 
 @onready var _animated_sprite := $AnimatedSprite2D
 
@@ -200,13 +197,6 @@ func _physics_process(delta: float) -> void:
 		perform_attack()
 
 func pickup_weapon(weapon: Node2D) -> void:
-	var drop_position = weapon.global_position
-	var drop_parent = weapon.get_parent()
-
-	# If already holding a weapon, drop it where the new weapon was
-	if current_weapon and current_weapon != weapon:
-		drop_current_weapon_at(drop_parent, drop_position)
-
 	has_knife = true
 	current_weapon = weapon
 	current_weapon_name = weapon.name
@@ -222,14 +212,6 @@ func pickup_weapon(weapon: Node2D) -> void:
 	weapon.scale = Vector2.ONE
 	weapon.z_index = 10
 	weapon.modulate = Color(1, 1, 1, 1)
-
-func drop_current_weapon_at(parent: Node, position: Vector2):
-	if current_weapon:
-		$WeaponSocket.remove_child(current_weapon)
-		parent.add_child(current_weapon)
-		current_weapon.global_position = position
-		current_weapon = null
-
 	
 func perform_attack():
 	if not can_attack or not has_knife:
@@ -369,7 +351,7 @@ func mark_dead() -> void:
 	ui.update_fluid(fluid_left)
 	ui.update_deaths(deaths)
 	
-	if fluid_left > 0 and not _printer.is_dead:
+	if fluid_left > 0:
 		respawn()
 	else:
 		_game_over()
@@ -408,29 +390,14 @@ func _game_over() -> void:
 	# Check if both players are dead before restarting
 	var all_players = get_tree().get_nodes_in_group("player")
 	var living_players = 0
-
 	for player in all_players:
-		if player.fluid_left > 0 and player != self:
+		if player.fluid_left > 0:
 			living_players += 1
-			
-			# Show "You Winx" to the surviving player
-			var win_label = player.get_node_or_null("YouWinLabel")
-			if win_label:
-				win_label.text = "The other player has died!\nYou won!"
-				win_label.visible = true
-
-	# Show "You Lost" on the dying player
-	var lose_label = get_node_or_null("YouWinLabel")  # assuming you're in the dying player
-	if lose_label:
-		lose_label.text = "You died!\nYou lost!"
-		lose_label.visible = true
-
-	# Restart the game if nobody's alive
+	
 	if living_players == 0:
+		# All players are dead, restart the game
 		await get_tree().create_timer(3.0).timeout
 		get_tree().reload_current_scene()
-
-
 
 func _on_foot_step_timer_timeout() -> void:
 	if velocity.length() > 0:
