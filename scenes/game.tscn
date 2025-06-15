@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://blt02p567i42n" path="res://scenes/hiding_spot_2.tscn" id="10_5newe"]
 [ext_resource type="PackedScene" uid="uid://dws6nlgcpc0qu" path="res://scenes/shower.tscn" id="10_37s47"]
 [ext_resource type="AudioStream" uid="uid://iqg3tey1tqkx" path="res://assets/music/Main.wav" id="11_kvpfn"]
+[ext_resource type="Script" uid="uid://bpf8hf6xijuhy" path="res://scripts/printer.gd" id="12_kvuet"]
 [ext_resource type="PackedScene" uid="uid://bl4jy6sedy8qm" path="res://scenes/sink.tscn" id="12_pl11u"]
 [ext_resource type="PackedScene" uid="uid://d3ebsk5i0fqfp" path="res://scenes/eating_table.tscn" id="13_5newe"]
 [ext_resource type="PackedScene" uid="uid://bk5iakrpnrpyt" path="res://scenes/doors.tscn" id="13_kvuet"]
@@ -71,6 +72,9 @@ sources/0 = SubResource("TileSetAtlasSource_u5sy4")
 sources/1 = SubResource("TileSetAtlasSource_gee14")
 sources/7 = SubResource("TileSetAtlasSource_e1j6l")
 sources/9 = SubResource("TileSetAtlasSource_pl11u")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qnb83"]
+size = Vector2(17.4139, 25.5088)
 
 [node name="Game" type="Node2D"]
 
@@ -200,9 +204,19 @@ position = Vector2(5572, -742)
 [node name="HidingSpot2" parent="." instance=ExtResource("8_dinhu")]
 position = Vector2(4279, 1306)
 
-[node name="Node2D" parent="." instance=ExtResource("9_ssvqc")]
-position = Vector2(4337, -2063)
+[node name="PrinterV1" type="StaticBody2D" parent="."]
+position = Vector2(3952, -2011)
 scale = Vector2(10.9766, 10.9766)
+script = ExtResource("12_kvuet")
+
+[node name="Sprite2D" type="Sprite2D" parent="PrinterV1"]
+position = Vector2(1.70247, -6.28609)
+scale = Vector2(0.501956, 0.470107)
+texture = ExtResource("9_0tnpc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PrinterV1"]
+position = Vector2(2.45978, -7.83484)
+shape = SubResource("RectangleShape2D_qnb83")
 
 [node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("11_kvpfn")
@@ -261,8 +275,10 @@ position = Vector2(9787, 2975)
 
 [node name="Player2" parent="." instance=ExtResource("17_rysoc")]
 position = Vector2(384, -459)
+printer_path = NodePath("../PrinterV1")
 
 [node name="Player1" parent="." instance=ExtResource("17_rysoc")]
+printer_path = NodePath("../PrinterV1")
 
 [node name="gun" parent="." instance=ExtResource("18_ssvqc")]
 position = Vector2(9787, 2975)
