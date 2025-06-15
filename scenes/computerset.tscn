@@ -1,0 +1,55 @@
+[gd_scene load_steps=5 format=3 uid="uid://cxdjk1twghdv4"]
+
+[ext_resource type="Texture2D" uid="uid://dolaf6vaqnlv3" path="res://assets/sprites/Computer Monitor Asset Pack Rev 1.png" id="1_rug6n"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_83g1c"]
+atlas = ExtResource("1_rug6n")
+region = Rect2(19.009, 31.7135, 10.0532, 16.0753)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u5ypr"]
+atlas = ExtResource("1_rug6n")
+region = Rect2(-0.0667477, 63.8736, 16.5294, 20.4729)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rug6n"]
+size = Vector2(57, 31)
+
+[node name="Computers" type="StaticBody2D"]
+texture_filter = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-14, -1)
+texture = SubResource("AtlasTexture_83g1c")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(-4, -1)
+texture = SubResource("AtlasTexture_83g1c")
+
+[node name="Sprite2D6" type="Sprite2D" parent="."]
+position = Vector2(11, 2)
+rotation = -1.5708
+texture = SubResource("AtlasTexture_83g1c")
+
+[node name="Sprite2D8" type="Sprite2D" parent="."]
+position = Vector2(-30, 2)
+rotation = -1.5708
+texture = SubResource("AtlasTexture_83g1c")
+
+[node name="Sprite2D3" type="Sprite2D" parent="."]
+position = Vector2(-4, -17)
+texture = SubResource("AtlasTexture_83g1c")
+
+[node name="Sprite2D4" type="Sprite2D" parent="."]
+position = Vector2(-14, -17)
+texture = SubResource("AtlasTexture_83g1c")
+
+[node name="Sprite2D5" type="Sprite2D" parent="."]
+position = Vector2(11, -13)
+texture = SubResource("AtlasTexture_u5ypr")
+
+[node name="Sprite2D7" type="Sprite2D" parent="."]
+position = Vector2(-30, -13)
+texture = SubResource("AtlasTexture_u5ypr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-9.5, -8.5)
+shape = SubResource("RectangleShape2D_rug6n")

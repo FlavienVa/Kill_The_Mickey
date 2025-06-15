@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=3 uid="uid://dws6nlgcpc0qu"]
+
+[ext_resource type="Texture2D" uid="uid://crrvidu5x7mhp" path="res://assets/sprites/home_pack.png" id="1_k6fbq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x6k2h"]
+atlas = ExtResource("1_k6fbq")
+region = Rect2(241, 97, 30, 13)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mq4iw"]
+atlas = ExtResource("1_k6fbq")
+region = Rect2(241, 86, 13, 11)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ic1bp"]
+size = Vector2(13, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oxv3j"]
+size = Vector2(30, 13)
+
+[node name="Shower" type="StaticBody2D"]
+texture_filter = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0.5, 0.5)
+texture = SubResource("AtlasTexture_x6k2h")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(-8, -11)
+texture = SubResource("AtlasTexture_mq4iw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-8.5, -5)
+shape = SubResource("RectangleShape2D_ic1bp")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_oxv3j")

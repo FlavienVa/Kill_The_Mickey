@@ -1,43 +1,36 @@
-extends StaticBody2D
-class_name Printer
+extends StaticBody2D  
 
-var health := 5
-var is_destroyed := false
+@export var max_health: int = 3
+var health: int = max_health
+var is_dead := false
 
-var shake_timer := 0.0
-var shake_duration := 0.2  # seconds
-var shake_strength := 7.0
-var original_position: Vector2
+@onready var health_label = $HealthLabel
 
 func _ready() -> void:
-	original_position = position
-	add_to_group("printer")
-	
-func _process(delta: float) -> void:
-	if shake_timer > 0.0:
-		shake_timer -= delta
-		var offset = Vector2(
-			randf_range(-shake_strength, shake_strength),
-			0
-	)
-		position = original_position + offset
-	else:
-		position = original_position
+	add_to_group("enemy")  # optionnel si tu veux le cibler avec les attaques de zone
+	update_health_label()
 
-func take_damage(amount: int, source_position: Vector2) -> void:
-	if is_destroyed:
+func take_damage(amount: int) -> void:
+	if is_dead:
 		return
-		
-	shake()
+
 	health -= amount
-	print("Printer hit! Remaining HP: ", health)
+	print("Printer took damage! Health remaining: ", health)
+	update_health_label()
+
+	# Visuel de dégât (comme pour l'ennemi)
+	modulate = Color.RED
+	await get_tree().create_timer(0.1).timeout
+	modulate = Color.WHITE
 
 	if health <= 0:
-		health = 0
-		is_destroyed = true
-		print("Printer destroyed!")
-		$Sprite2D.texture = preload("res://assets/sprites/broken-printer.png")
+		die()
 
+func update_health_label():
+	if health_label:
+		health_label.text = str(health) + "/" + str(max_health)
 
-func shake():
-	shake_timer = shake_duration
+func die():
+	is_dead = true
+	print("Printer destroyed!")
+	$Sprite2D.texture = preload("res://assets/sprites/broken-printer.png")
