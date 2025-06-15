@@ -4,6 +4,9 @@ extends StaticBody2D
 var health: int = max_health
 var is_dead := false
 
+@export var ink: int = 5
+
+@onready var sprite := get_node("Rooms_PrinterRoom_PrinterV1#Sprite2D")
 @onready var health_label = $HealthLabel
 
 func _ready() -> void:
@@ -29,8 +32,21 @@ func take_damage(amount: int) -> void:
 func update_health_label():
 	if health_label:
 		health_label.text = str(health) + "/" + str(max_health)
-		
+
+func use_ink() -> int:
+	if ink > 0:
+		ink -= 1
+		return ink
+	else:
+		if ink == 0:
+			return 0
+	# Ensure a return value in all cases
+	return 0
+
 func die():
 	is_dead = true
 	print("Printer destroyed!")
-	$Sprite2D.texture = preload("res://assets/sprites/broken-printer.png")
+	if sprite:
+		sprite.texture = preload("res://assets/sprites/broken-printer.png")
+	else:
+		print("Spritenode couldn't be found!")

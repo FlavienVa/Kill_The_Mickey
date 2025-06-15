@@ -52,3 +52,19 @@ func show_printer_label():
 	label.add_theme_font_override("font",load("res://assets/fonts/PixelOperator8.ttf"))
 	label.add_theme_color_override("color", Color("RED"))
 	add_child(label)
+
+func show_winner_label(player_id):
+	var label = Label.new()
+	label.name = "WinnerLabel"
+	label.text = "Player %d wins!" % player_id
+	label.anchor_right = 1.0
+	label.anchor_bottom = 0.1
+	label.offset_left = 20
+	label.offset_top = 250
+	label.add_theme_font_override("font",load("res://assets/fonts/PixelOperator8.ttf"))
+	label.add_theme_color_override("color", Color("GREEN"))
+	add_child(label)
+	
+	await get_tree().create_timer(3.0).timeout
+	if has_node("WinnerLabel"):
+		$WinnerLabel.queue_free()

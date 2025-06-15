@@ -94,7 +94,7 @@ func _process(delta: float) -> void:
 		
 	# Initialize UI
 	if ui:
-		ui.update_fluid(fluid_left)
+		ui.update_fluid(_printer.ink)
 		ui.update_deaths(deaths)
 		if current_variant == "happy":
 			ui.show_variant_label("HappyLabel", player_id)
@@ -102,6 +102,8 @@ func _process(delta: float) -> void:
 			ui.remove_label("HappyLabel")
 		if _printer.is_dead:
 			ui.show_printer_label()
+		if self.fluid_left == 0 or (_printer.is_dead and is_dead):
+			ui.show_winner_label(player_id)
 		
 	
 
@@ -334,7 +336,6 @@ func take_damage(amount: int, source_position: Vector2) -> void:
 	$DamageTakenAudio.play()
 
 	if health <= 0:
-		is_dead = true
 		mark_dead()
 
 
@@ -365,18 +366,20 @@ func mark_dead() -> void:
 
 	set_physics_process(false)
 	$AnimatedSprite2D.visible = false
+	$HealthBar.visible = false
 
 	
 	# Wait a short moment before respawning
 	await get_tree().create_timer(1.0).timeout
 	deaths += 1
-	fluid_left -= 1
+	fluid_left = _printer.use_ink()
 	ui.update_fluid(fluid_left)
 	ui.update_deaths(deaths)
 	
 	if fluid_left > 0 and not _printer.is_dead:
 		respawn()
 	else:
+		is_dead = true
 		_game_over()
 
 func respawn() -> void:
@@ -395,7 +398,6 @@ func respawn() -> void:
 	# Reset health
 	health = max_health
 	_health_bar.value = health
-	is_dead = false
 
 	
 	
@@ -406,34 +408,32 @@ func _game_over() -> void:
 	
 	# Show game over message for this player
 	print("Player %d GAME OVER - Deaths: %d" % [player_id, deaths])
-	
+
+	# Show a game over label or UI element
+
+	await get_tree().create_timer(3.0).timeout
+	get_tree().reload_current_scene()
 	# You might want to handle this differently for split screen
 	# Maybe show a game over overlay for just this player's viewport
-	
-	# Check if both players are dead before restarting
-	var all_players = get_tree().get_nodes_in_group("player")
-	var living_players = 0
+		# Check if both players are dead before restarting
+	# var all_players = get_tree().get_nodes_in_group("player")
+	# var living_players = 0
 
-	for player in all_players:
-		if player.fluid_left > 0 and player != self:
-			living_players += 1
+	# for player in all_players:
+	# 	if player.fluid_left > 0 and player != self:
+	# 		living_players += 1
 			
-			# Show "You Winx" to the surviving player
-			var win_label = player.get_node_or_null("YouWinLabel")
-			if win_label:
-				win_label.text = "The other player has died!\nYou won!"
-				win_label.visible = true
+	# 		# Show "You Winx" to the surviving player
+	# 		var win_label = player.get_node_or_null("YouWinLabel")
+	# 		if win_label:
+	# 			win_label.text = "The other player has died!\nYou won!"
+	# 			win_label.visible = true
 
-	# Show "You Lost" on the dying player
-	var lose_label = get_node_or_null("YouWinLabel")  # assuming you're in the dying player
-	if lose_label:
-		lose_label.text = "You died!\nYou lost!"
-		lose_label.visible = true
-
-	# Restart the game if nobody's alive
-	if living_players == 0:
-		await get_tree().create_timer(3.0).timeout
-		get_tree().reload_current_scene()
+	# # Show "You Lost" on the dying player
+	# var lose_label = get_node_or_null("YouWinLabel")  # assuming you're in the dying player
+	# if lose_label:
+	# 	lose_label.text = "You died!\nYou lost!"
+	# 	lose_label.visible = true
 
 
 
