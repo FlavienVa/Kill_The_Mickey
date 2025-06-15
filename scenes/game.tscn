@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=4 uid="uid://bkfgf4vgexmva"]
+[gd_scene load_steps=35 format=4 uid="uid://bkfgf4vgexmva"]
 
 [ext_resource type="Script" uid="uid://0h6uwl1ghtep" path="res://scripts/game_manager.gd" id="1_iywne"]
 [ext_resource type="Texture2D" uid="uid://bj1qh2bal1t32" path="res://assets/sprites/tilesetSpaceship.png" id="2_p57ef"]
@@ -10,7 +10,6 @@
 [ext_resource type="PackedScene" uid="uid://cwdqx0pmwic5u" path="res://scenes/lava_pit.tscn" id="5_u5sy4"]
 [ext_resource type="PackedScene" uid="uid://bwqea16e3p2l3" path="res://scenes/kitchen.tscn" id="6_264po"]
 [ext_resource type="PackedScene" uid="uid://dyondbhyde86n" path="res://scenes/hidingSpot.tscn" id="8_dinhu"]
-[ext_resource type="PackedScene" uid="uid://b8wubjvaoip37" path="res://scenes/printer.tscn" id="9_ssvqc"]
 [ext_resource type="Texture2D" uid="uid://bpokv0lviygyq" path="res://assets/sprites/pixil-frame-0(1).png" id="9_0tnpc"]
 [ext_resource type="PackedScene" uid="uid://blt02p567i42n" path="res://scenes/hiding_spot_2.tscn" id="10_5newe"]
 [ext_resource type="PackedScene" uid="uid://dws6nlgcpc0qu" path="res://scenes/shower.tscn" id="10_37s47"]
@@ -248,7 +247,6 @@ texture = ExtResource("9_0tnpc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PrinterV1"]
 position = Vector2(2.45978, -7.83484)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_qnb83")
 
 [node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
