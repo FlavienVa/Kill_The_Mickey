@@ -226,7 +226,6 @@ texture = ExtResource("9_0tnpc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PrinterV1"]
 position = Vector2(2.45978, -7.83484)
-scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_qnb83")
 
 [node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
