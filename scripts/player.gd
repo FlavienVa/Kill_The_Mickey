@@ -200,6 +200,13 @@ func _physics_process(delta: float) -> void:
 		perform_attack()
 
 func pickup_weapon(weapon: Node2D) -> void:
+	var drop_position = weapon.global_position
+	var drop_parent = weapon.get_parent()
+
+	# If already holding a weapon, drop it where the new weapon was
+	if current_weapon and current_weapon != weapon:
+		drop_current_weapon_at(drop_parent, drop_position)
+
 	has_knife = true
 	current_weapon = weapon
 	current_weapon_name = weapon.name
@@ -215,6 +222,14 @@ func pickup_weapon(weapon: Node2D) -> void:
 	weapon.scale = Vector2.ONE
 	weapon.z_index = 10
 	weapon.modulate = Color(1, 1, 1, 1)
+
+func drop_current_weapon_at(parent: Node, position: Vector2):
+	if current_weapon:
+		$WeaponSocket.remove_child(current_weapon)
+		parent.add_child(current_weapon)
+		current_weapon.global_position = position
+		current_weapon = null
+
 	
 func perform_attack():
 	if not can_attack or not has_knife:
