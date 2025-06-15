@@ -29,6 +29,7 @@ sprite_frames = ExtResource("2_qhqgy")
 animation = &"run"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+light_mask = 7
 position = Vector2(14, -28)
 shape = SubResource("RectangleShape2D_g2els")
 
