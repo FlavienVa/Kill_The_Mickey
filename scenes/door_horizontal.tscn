@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=3 uid="uid://in42t6eledtq"]
+
+[ext_resource type="Script" uid="uid://cyh20ra14sp4n" path="res://scripts/door.gd" id="1_grhda"]
+[ext_resource type="Texture2D" uid="uid://0yfl8nphg1fk" path="res://assets/sprites/Door_spritesheet.png" id="2_tb866"]
+[ext_resource type="AudioStream" uid="uid://dtxmcvxl6ypnu" path="res://assets/sounds/door.wav" id="3_w0fvm"]
+[ext_resource type="PackedScene" uid="uid://r6d6fjkoicai" path="res://scenes/interaction_area.tscn" id="4_q5bsu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ctrmn"]
+size = Vector2(247, 615)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6xqom"]
+size = Vector2(664, 252)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_af2mo"]
+size = Vector2(25, 258)
+
+[node name="DoorHorizontal" type="StaticBody2D"]
+position = Vector2(140, 3078)
+script = ExtResource("1_grhda")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(42.5, 12.5)
+scale = Vector2(4.17188, 3.98437)
+texture = ExtResource("2_tb866")
+hframes = 3
+region_rect = Rect2(0, 0, 64, 64)
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_w0fvm")
+volume_db = -18.943
+pitch_scale = 0.79
+
+[node name="Interaction Area" parent="." instance=ExtResource("4_q5bsu")]
+texture_filter = 1
+action_name = "operate"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interaction Area"]
+position = Vector2(45, 10)
+shape = SubResource("RectangleShape2D_ctrmn")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Interaction Area"]
+position = Vector2(46, 10)
+shape = SubResource("RectangleShape2D_6xqom")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(45.5, 11)
+rotation = 1.5708
+shape = SubResource("RectangleShape2D_af2mo")

@@ -6,7 +6,7 @@ var interact: Callable = func(): pass
 var current_player: Node2D  
 @onready var label = $Label
 const base_text_player1 = "[E] to "
-const base_text_player2 = "[SHIFT] to "
+const base_text_player2 = "[SPACE] to "
 
 func _ready() -> void:
 	label.hide()

@@ -14,4 +14,4 @@ func _on_HostGame_pressed():
 
 func _on_JoinGame_pressed():
 	print("join game clicked")
-	get_tree().change_scene_to_file("res://scenes/game_scene.tscn")
+	get_tree().quit()  # This line quits the game
