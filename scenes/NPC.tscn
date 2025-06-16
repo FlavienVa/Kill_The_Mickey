@@ -10,7 +10,7 @@ size = Vector2(7, 15)
 size = Vector2(3.33333, 16.6667)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6xvi5"]
-size = Vector2(43.3, 20)
+size = Vector2(91.9, 20)
 
 [node name="NPC" type="CharacterBody2D"]
 texture_filter = 1
@@ -40,7 +40,7 @@ shape = SubResource("RectangleShape2D_mhefn")
 collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SuspicionRadius"]
-position = Vector2(221.5, -14)
+position = Vector2(464.5, -14)
 scale = Vector2(10, 10)
 shape = SubResource("RectangleShape2D_6xvi5")
 
