@@ -1,6 +1,18 @@
-[gd_resource type="SpriteFrames" load_steps=7 format=3 uid="uid://n2tegfe0ay8r"]
+[gd_resource type="SpriteFrames" load_steps=10 format=3 uid="uid://n2tegfe0ay8r"]
 
 [ext_resource type="Texture2D" uid="uid://1i0w4wog5je4" path="res://assets/sprites/angrymickey_spritesheet.png" id="1_ocks7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h3fm3"]
+atlas = ExtResource("1_ocks7")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6jfhk"]
+atlas = ExtResource("1_ocks7")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lrej1"]
+atlas = ExtResource("1_ocks7")
+region = Rect2(128, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dqkch"]
 atlas = ExtResource("1_ocks7")
@@ -24,6 +36,20 @@ region = Rect2(0, 0, 64, 64)
 
 [resource]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h3fm3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6jfhk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lrej1")
+}],
+"loop": true,
+"name": &"hit",
+"speed": 1.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_dqkch")
