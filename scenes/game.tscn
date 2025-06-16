@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=4 uid="uid://bkfgf4vgexmva"]
+[gd_scene load_steps=40 format=4 uid="uid://bkfgf4vgexmva"]
 
 [ext_resource type="Script" uid="uid://0h6uwl1ghtep" path="res://scripts/game_manager.gd" id="1_iywne"]
 [ext_resource type="Texture2D" uid="uid://bj1qh2bal1t32" path="res://assets/sprites/tilesetSpaceship.png" id="2_p57ef"]
@@ -31,6 +31,7 @@
 [ext_resource type="PackedScene" uid="uid://dj5132i183wvg" path="res://scenes/NPC.tscn" id="19_264po"]
 [ext_resource type="PackedScene" uid="uid://bc1n3cj6mvnyp" path="res://scenes/kitchenCounter.tscn" id="20_1kice"]
 [ext_resource type="PackedScene" uid="uid://dxs7ben3wdjod" path="res://scenes/bin_big.tscn" id="20_qouja"]
+[ext_resource type="PackedScene" uid="uid://in42t6eledtq" path="res://scenes/door_horizontal.tscn" id="25_v2yb1"]
 [ext_resource type="PackedScene" uid="uid://bd57fob6ks1hp" path="res://scenes/bed.tscn" id="27_qnb83"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_u5sy4"]
@@ -329,18 +330,6 @@ position = Vector2(2614, 1806)
 [node name="Door3" parent="Doors" instance=ExtResource("13_kvuet")]
 position = Vector2(8585, -4080)
 
-[node name="Door4" parent="Doors" instance=ExtResource("13_kvuet")]
-position = Vector2(6340, -3079)
-rotation = 1.5708
-
-[node name="Door9" parent="Doors" instance=ExtResource("13_kvuet")]
-position = Vector2(3523, -3293)
-rotation = 1.5708
-
-[node name="Door10" parent="Doors" instance=ExtResource("13_kvuet")]
-position = Vector2(1469, 3575)
-rotation = 1.5708
-
 [node name="Door5" parent="Doors" instance=ExtResource("13_kvuet")]
 position = Vector2(4752, 2312)
 
@@ -349,6 +338,15 @@ position = Vector2(9091, 14)
 
 [node name="Door8" parent="Doors" instance=ExtResource("13_kvuet")]
 position = Vector2(9961, -504)
+
+[node name="DoorHorizontal" parent="Doors" instance=ExtResource("25_v2yb1")]
+position = Vector2(3468, -3245)
+
+[node name="DoorHorizontal3" parent="Doors" instance=ExtResource("25_v2yb1")]
+position = Vector2(1425, 3598)
+
+[node name="DoorHorizontal2" parent="Doors" instance=ExtResource("25_v2yb1")]
+position = Vector2(6285, -3013)
 
 [node name="Weapons" type="Node" parent="."]
 
