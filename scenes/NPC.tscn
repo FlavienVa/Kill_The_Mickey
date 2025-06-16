@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://dj5132i183wvg"]
 
-[ext_resource type="Script" path="res://scripts/NPC.gd" id="1_6xvi5"]
+[ext_resource type="Script" uid="uid://4v3f36spc7ql" path="res://scripts/NPC.gd" id="1_6xvi5"]
 [ext_resource type="SpriteFrames" uid="uid://b7c2yi6x2f3p0" path="res://npc/npc-sprite.tres" id="2_6xvi5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r5vbj"]
@@ -9,8 +9,8 @@ size = Vector2(7, 15)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mhefn"]
 size = Vector2(3.33333, 16.6667)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_6xvi5"]
-radius = 63.0714
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6xvi5"]
+size = Vector2(43.3, 20)
 
 [node name="NPC" type="CharacterBody2D"]
 texture_filter = 1
@@ -40,8 +40,9 @@ shape = SubResource("RectangleShape2D_mhefn")
 collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SuspicionRadius"]
+position = Vector2(221.5, -14)
 scale = Vector2(10, 10)
-shape = SubResource("CircleShape2D_6xvi5")
+shape = SubResource("RectangleShape2D_6xvi5")
 
 [connection signal="body_entered" from="SuspicionRadius" to="." method="_on_suspicion_radius_body_entered"]
 [connection signal="body_exited" from="SuspicionRadius" to="." method="_on_suspicion_radius_body_exited"]

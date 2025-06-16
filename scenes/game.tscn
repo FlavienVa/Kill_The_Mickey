@@ -401,15 +401,20 @@ printer_path = NodePath("../Rooms/PrinterRoom/Rooms_PrinterRoom#PrinterV1")
 
 [node name="NPC" parent="." instance=ExtResource("19_264po")]
 position = Vector2(238, -3792)
+printer_path = NodePath("../Rooms/PrinterRoom/Rooms_PrinterRoom#PrinterV1")
 
 [node name="NPC2" parent="." instance=ExtResource("19_264po")]
 position = Vector2(5565, -4057)
+printer_path = NodePath("../Rooms/PrinterRoom/Rooms_PrinterRoom#PrinterV1")
 
 [node name="NPC3" parent="." instance=ExtResource("19_264po")]
 position = Vector2(2947, -431)
+printer_path = NodePath("../Rooms/PrinterRoom/Rooms_PrinterRoom#PrinterV1")
 
 [node name="NPC4" parent="." instance=ExtResource("19_264po")]
 position = Vector2(3027, 2574)
+printer_path = NodePath("../Rooms/PrinterRoom/Rooms_PrinterRoom#PrinterV1")
 
 [node name="NPC5" parent="." instance=ExtResource("19_264po")]
 position = Vector2(-561, 1828)
+printer_path = NodePath("../Rooms/PrinterRoom/Rooms_PrinterRoom#PrinterV1")

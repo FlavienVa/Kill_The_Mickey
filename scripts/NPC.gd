@@ -7,6 +7,9 @@ var move_duration := 10.0
 var move_timer := 0.0
 var path_follow: PathFollow2D
 
+@export var printer_path: NodePath
+@onready var _printer := get_node(printer_path)
+
 func _ready():
 	move_timer = move_duration
 	direction = Vector2.RIGHT  # Start moving right
@@ -29,9 +32,17 @@ func _physics_process(delta):
 	velocity = direction * speed
 	move_and_slide()
 
-	# 👇 Flip the sprite
+	#Flip the sprite
 	if direction.x != 0:
 		$AnimatedSprite2D.flip_h = direction.x < 0
+
+	var suspicion_shape = $SuspicionRadius/CollisionShape2D
+	if suspicion_shape and suspicion_shape.shape:
+		var offset = suspicion_shape.position
+		offset.x = abs(offset.x) * sign(direction.x)
+		suspicion_shape.position = offset
+
+
 		
 	# Play animation
 	if velocity.length() > 0:
@@ -53,9 +64,7 @@ func _on_suspicion_radius_body_exited(body: Node2D) -> void:
 		check_suspicion()
 
 func check_suspicion():
-	if players_in_radius.size() > 0:
+	if players_in_radius.size() > 1:
 		# Trigger printer break
-		print("hello")
-	if players_in_radius.size() > 0:
-		# Trigger printer break
-		print("hello")
+		_printer.die()
+		
