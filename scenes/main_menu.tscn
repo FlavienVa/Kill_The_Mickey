@@ -1,8 +1,21 @@
-[gd_scene load_steps=4 format=3 uid="uid://ckhh4a8l332dk"]
+[gd_scene load_steps=10 format=3 uid="uid://ckhh4a8l332dk"]
 
 [ext_resource type="Script" uid="uid://car3il8lbqky5" path="res://scripts/main_menu.gd" id="1_l6cm7"]
 [ext_resource type="FontFile" uid="uid://vgl0sm2xl6rm" path="res://assets/fonts/PixelOperator8-Bold.ttf" id="2_ekxnf"]
 [ext_resource type="Texture2D" uid="uid://bj1qh2bal1t32" path="res://assets/sprites/tilesetSpaceship.png" id="3_bqqt6"]
+[ext_resource type="Texture2D" uid="uid://dfrg4f1w3km16" path="res://assets/sprites/axe.png" id="4_rtw2f"]
+[ext_resource type="Texture2D" uid="uid://bcibhtl881eke" path="res://assets/sprites/happymickey_spritesheet.png" id="5_oa1go"]
+[ext_resource type="Texture2D" uid="uid://dgbi3rgchavyt" path="res://assets/sprites/hammer.png" id="6_tbmy8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jk1qb"]
+atlas = ExtResource("4_rtw2f")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5dd4i"]
+atlas = ExtResource("5_oa1go")
+region = Rect2(146, 0, 26, 51)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lgwnu"]
+atlas = ExtResource("6_tbmy8")
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -58,12 +71,33 @@ layout_mode = 2
 size_flags_vertical = 4
 theme_override_fonts/font = ExtResource("2_ekxnf")
 theme_override_font_sizes/font_size = 28
-text = "Host Game"
+text = "Start Game"
 vertical_icon_alignment = 0
 
 [node name="JoinGame" type="Button" parent="MultiplayerHUB/Panel/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_ekxnf")
 theme_override_font_sizes/font_size = 28
-text = "Join Game"
+text = "Exit Game"
 vertical_icon_alignment = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+texture_filter = 1
+position = Vector2(227, 309)
+scale = Vector2(5, 5)
+texture = SubResource("AtlasTexture_jk1qb")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+visible = false
+texture_filter = 1
+position = Vector2(1136, 453)
+scale = Vector2(5, 5)
+texture = SubResource("AtlasTexture_5dd4i")
+
+[node name="Sprite2D3" type="Sprite2D" parent="."]
+visible = false
+texture_filter = 1
+position = Vector2(639, 128)
+scale = Vector2(5, 5)
+texture = SubResource("AtlasTexture_lgwnu")

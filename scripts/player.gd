@@ -398,7 +398,7 @@ func respawn() -> void:
 	# Reset health
 	health = max_health
 	_health_bar.value = health
-
+	_health_bar.visible = true
 	
 	
 func _game_over() -> void:
