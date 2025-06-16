@@ -57,10 +57,7 @@ func take_damage() -> void:
 	modulate = Color.RED
 	await get_tree().create_timer(0.1).timeout
 	modulate = Color.WHITE
-	if player.has_method("is_angry") and player.is_angry():
-		health -= 10
-	else:
-		health -= 1
+	health -= 1
 	print(health)
 	if health <= 0:
 		is_destroyed = true

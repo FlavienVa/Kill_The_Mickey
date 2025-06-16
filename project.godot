@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 MultiplayerManager="*res://scripts/Multiplayer/multiplayer_manager.gd"
 PlayerManager="*res://scripts/player_manager.gd"
 InteractionManager="*res://scenes/InteractionManager.tscn"
+Analytics="*res://scripts/analytics.gd"
 
 [display]
 

@@ -201,7 +201,7 @@ func _physics_process(delta: float) -> void:
 	elif player_id == 2:
 		attack_input = "p2_attack"
 	
-	if has_knife and Input.is_action_just_pressed(attack_input) and can_attack:
+	if has_knife or is_angry() and Input.is_action_just_pressed(attack_input) and can_attack:
 		perform_attack()
 
 func pickup_weapon(weapon: Node2D) -> void:
@@ -238,12 +238,15 @@ func drop_current_weapon_at(parent: Node, position: Vector2):
 
 	
 func perform_attack():
-	if not can_attack or not has_knife:
+	if not can_attack or not has_knife and not is_angry():
 		return
 		
 	can_attack = false
 	is_attacking = true
 
+	if is_angry():
+		$AnimatedSprite2D.play("hit")
+		
 	# Animate weapon forward during attack
 	if current_weapon:
 		weapon_target_rotation = 90.0 if not $AnimatedSprite2D.flip_h else -90.0
